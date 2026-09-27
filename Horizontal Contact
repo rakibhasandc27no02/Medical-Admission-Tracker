@@ -1,0 +1,182 @@
+ <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<div class="contact-dock">
+
+    <!-- C -->
+    <div class="letter facebook">
+        <div class="flip">
+            <div class="front">C</div>
+            <div class="back">
+                <i class="fa-brands fa-facebook-f"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">Facebook</span>
+    </div>
+
+    <!-- O -->
+    <div class="letter instagram">
+        <div class="flip">
+            <div class="front">O</div>
+            <div class="back">
+                <i class="fa-brands fa-instagram"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">Instagram</span>
+    </div>
+
+    <!-- N -->
+    <div class="letter linkedin">
+        <div class="flip">
+            <div class="front">N</div>
+            <div class="back">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">LinkedIn</span>
+    </div>
+
+    <!-- T -->
+    <div class="letter youtube">
+        <div class="flip">
+            <div class="front">T</div>
+            <div class="back">
+                <i class="fa-brands fa-youtube"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">YouTube</span>
+    </div>
+
+    <!-- A -->
+    <div class="letter whatsapp">
+        <div class="flip">
+            <div class="front">A</div>
+            <div class="back">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">WhatsApp</span>
+    </div>
+
+    <!-- C -->
+    <div class="letter email">
+        <div class="flip">
+            <div class="front">C</div>
+            <div class="back">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">Email</span>
+    </div>
+
+    <!-- T -->
+    <div class="letter twitter">
+        <div class="flip">
+            <div class="front">T</div>
+            <div class="back">
+                <i class="fa-brands fa-x-twitter"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">X / Twitter</span>
+    </div>
+
+</div>
+
+
+
+
+ <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<div class="contact-dock">
+
+    <!-- C -->
+    <div class="letter facebook">
+        <div class="flip">
+            <div class="front">C</div>
+            <div class="back">
+                <i class="fa-brands fa-facebook-f"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">Facebook</span>
+    </div>
+
+    <!-- O -->
+    <div class="letter instagram">
+        <div class="flip">
+            <div class="front">O</div>
+            <div class="back">
+                <i class="fa-brands fa-instagram"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">Instagram</span>
+    </div>
+
+    <!-- N -->
+    <div class="letter linkedin">
+        <div class="flip">
+            <div class="front">N</div>
+            <div class="back">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">LinkedIn</span>
+    </div>
+
+    <!-- T -->
+    <div class="letter youtube">
+        <div class="flip">
+            <div class="front">T</div>
+            <div class="back">
+                <i class="fa-brands fa-youtube"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">YouTube</span>
+    </div>
+
+    <!-- A -->
+    <div class="letter whatsapp">
+        <div class="flip">
+            <div class="front">A</div>
+            <div class="back">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">WhatsApp</span>
+    </div>
+
+    <!-- C -->
+    <div class="letter email">
+        <div class="flip">
+            <div class="front">C</div>
+            <div class="back">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">Email</span>
+    </div>
+
+    <!-- T -->
+    <div class="letter twitter">
+        <div class="flip">
+            <div class="front">T</div>
+            <div class="back">
+                <i class="fa-brands fa-x-twitter"></i>
+            </div>
+        </div>
+
+        <span class="tooltip">X / Twitter</span>
+    </div>
+
+</div>
