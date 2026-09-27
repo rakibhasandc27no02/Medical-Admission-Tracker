@@ -1,186 +1,453 @@
-<html>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
- 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<div class="contact-dock">
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #080b12;
+    font-family: Arial, sans-serif;
+}
 
-    <!-- C -->
-    <div class="letter facebook">
-        <div class="flip">
-            <div class="front">C</div>
-            <div class="back">
-                <i class="fa-brands fa-facebook-f"></i>
-            </div>
-        </div>
+/* CONTACT DOCK */
+.contact-dock {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 20px;
+    backdrop-filter: blur(18px);
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.45),
+        inset 0 0 20px rgba(255,255,255,.03);
+}
 
-        <span class="tooltip">Facebook</span>
-    </div>
+/* EACH CHARACTER */
+.letter {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    perspective: 800px;
+    cursor: pointer;
+}
 
-    <!-- O -->
-    <div class="letter instagram">
-        <div class="flip">
-            <div class="front">O</div>
-            <div class="back">
-                <i class="fa-brands fa-instagram"></i>
-            </div>
-        </div>
+/* FLIP */
+.flip {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition:
+        transform .65s cubic-bezier(.2,.8,.2,1);
+}
 
-        <span class="tooltip">Instagram</span>
-    </div>
+.letter:hover .flip {
+    transform: rotateY(180deg);
+}
 
-    <!-- N -->
-    <div class="letter linkedin">
-        <div class="flip">
-            <div class="front">N</div>
-            <div class="back">
-                <i class="fa-brands fa-linkedin-in"></i>
-            </div>
-        </div>
+/* FRONT + BACK */
+.front,
+.back {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    backface-visibility: hidden;
+}
 
-        <span class="tooltip">LinkedIn</span>
-    </div>
+/* FRONT */
+.front {
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow:
+        inset 0 0 15px rgba(255,255,255,.03);
+}
 
-    <!-- T -->
-    <div class="letter youtube">
-        <div class="flip">
-            <div class="front">T</div>
-            <div class="back">
-                <i class="fa-brands fa-youtube"></i>
-            </div>
-        </div>
+/* BACK */
+.back {
+    transform: rotateY(180deg);
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    font-size: 22px;
+}
 
-        <span class="tooltip">YouTube</span>
-    </div>
+/* SOCIAL COLORS */
 
-    <!-- A -->
-    <div class="letter whatsapp">
-        <div class="flip">
-            <div class="front">A</div>
-            <div class="back">
-                <i class="fa-brands fa-whatsapp"></i>
-            </div>
-        </div>
+.facebook .back {
+    color: #1877f2;
+}
 
-        <span class="tooltip">WhatsApp</span>
-    </div>
+.instagram .back {
+    color: #ff2d92;
+}
 
-    <!-- C -->
-    <div class="letter email">
-        <div class="flip">
-            <div class="front">C</div>
-            <div class="back">
-                <i class="fa-solid fa-envelope"></i>
-            </div>
-        </div>
+.linkedin .back {
+    color: #0a66c2;
+}
 
-        <span class="tooltip">Email</span>
-    </div>
+.youtube .back {
+    color: #ff0000;
+}
 
-    <!-- T -->
-    <div class="letter twitter">
-        <div class="flip">
-            <div class="front">T</div>
-            <div class="back">
-                <i class="fa-brands fa-x-twitter"></i>
-            </div>
-        </div>
+.whatsapp .back {
+    color: #25d366;
+}
 
-        <span class="tooltip">X / Twitter</span>
-    </div>
+.email .back {
+    color: #00c8ff;
+}
 
-</div>
+.twitter .back {
+    color: #ffffff;
+}
+
+/* TOOLTIP */
+.tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: -42px;
+    transform:
+        translateX(-50%)
+        translateY(-8px);
+    padding: 7px 12px;
+    background: white;
+    color: #111;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+    z-index: 20;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.35);
+}
+
+/* TOOLTIP ARROW */
+.tooltip::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: white;
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+}
+
+/* SHOW TOOLTIP */
+.letter:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+/* GLOW */
+.letter:hover .back {
+    animation: iconGlow .8s ease forwards;
+}
+
+@keyframes iconGlow {
+
+    0% {
+        box-shadow: 0 0 0 transparent;
+    }
+
+    50% {
+        box-shadow:
+            0 0 20px currentColor,
+            0 0 40px currentColor;
+    }
+
+    100% {
+        box-shadow:
+            0 0 15px currentColor;
+    }
+}
+
+/* DOCK HOVER */
+.contact-dock:hover .letter {
+    transition: transform .3s ease;
+}
+
+/* NEIGHBOUR EFFECT */
+.letter:hover + .letter {
+    transform: translateY(-6px) scale(1.08);
+}
+
+.letter:has(+ .letter:hover) {
+    transform: translateY(-6px) scale(1.08);
+}
+
+/* MOBILE */
+@media(max-width:600px) {
+
+    .contact-dock {
+        gap: 3px;
+        padding: 10px;
+    }
+
+    .letter {
+        width: 42px;
+        height: 42px;
+    }
+
+    .front {
+        font-size: 16px;
+    }
+
+    .back {
+        font-size: 18px;
+    }
+}
 
 
 
 
- <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<div class="contact-dock">
 
-    <!-- C -->
-    <div class="letter facebook">
-        <div class="flip">
-            <div class="front">C</div>
-            <div class="back">
-                <i class="fa-brands fa-facebook-f"></i>
-            </div>
-        </div>
 
-        <span class="tooltip">Facebook</span>
-    </div>
 
-    <!-- O -->
-    <div class="letter instagram">
-        <div class="flip">
-            <div class="front">O</div>
-            <div class="back">
-                <i class="fa-brands fa-instagram"></i>
-            </div>
-        </div>
 
-        <span class="tooltip">Instagram</span>
-    </div>
 
-    <!-- N -->
-    <div class="letter linkedin">
-        <div class="flip">
-            <div class="front">N</div>
-            <div class="back">
-                <i class="fa-brands fa-linkedin-in"></i>
-            </div>
-        </div>
 
-        <span class="tooltip">LinkedIn</span>
-    </div>
 
-    <!-- T -->
-    <div class="letter youtube">
-        <div class="flip">
-            <div class="front">T</div>
-            <div class="back">
-                <i class="fa-brands fa-youtube"></i>
-            </div>
-        </div>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        <span class="tooltip">YouTube</span>
-    </div>
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #080b12;
+    font-family: Arial, sans-serif;
+}
 
-    <!-- A -->
-    <div class="letter whatsapp">
-        <div class="flip">
-            <div class="front">A</div>
-            <div class="back">
-                <i class="fa-brands fa-whatsapp"></i>
-            </div>
-        </div>
+/* CONTACT DOCK */
+.contact-dock {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 20px;
+    backdrop-filter: blur(18px);
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.45),
+        inset 0 0 20px rgba(255,255,255,.03);
+}
 
-        <span class="tooltip">WhatsApp</span>
-    </div>
+/* EACH CHARACTER */
+.letter {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    perspective: 800px;
+    cursor: pointer;
+}
 
-    <!-- C -->
-    <div class="letter email">
-        <div class="flip">
-            <div class="front">C</div>
-            <div class="back">
-                <i class="fa-solid fa-envelope"></i>
-            </div>
-        </div>
+/* FLIP */
+.flip {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition:
+        transform .65s cubic-bezier(.2,.8,.2,1);
+}
 
-        <span class="tooltip">Email</span>
-    </div>
+.letter:hover .flip {
+    transform: rotateY(180deg);
+}
 
-    <!-- T -->
-    <div class="letter twitter">
-        <div class="flip">
-            <div class="front">T</div>
-            <div class="back">
-                <i class="fa-brands fa-x-twitter"></i>
-            </div>
-        </div>
+/* FRONT + BACK */
+.front,
+.back {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    backface-visibility: hidden;
+}
 
-        <span class="tooltip">X / Twitter</span>
-    </div>
+/* FRONT */
+.front {
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow:
+        inset 0 0 15px rgba(255,255,255,.03);
+}
 
-</div>
- </html> 
+/* BACK */
+.back {
+    transform: rotateY(180deg);
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    font-size: 22px;
+}
+
+/* SOCIAL COLORS */
+
+.facebook .back {
+    color: #1877f2;
+}
+
+.instagram .back {
+    color: #ff2d92;
+}
+
+.linkedin .back {
+    color: #0a66c2;
+}
+
+.youtube .back {
+    color: #ff0000;
+}
+
+.whatsapp .back {
+    color: #25d366;
+}
+
+.email .back {
+    color: #00c8ff;
+}
+
+.twitter .back {
+    color: #ffffff;
+}
+
+/* TOOLTIP */
+.tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: -42px;
+    transform:
+        translateX(-50%)
+        translateY(-8px);
+    padding: 7px 12px;
+    background: white;
+    color: #111;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+    z-index: 20;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.35);
+}
+
+/* TOOLTIP ARROW */
+.tooltip::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: white;
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+}
+
+/* SHOW TOOLTIP */
+.letter:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+/* GLOW */
+.letter:hover .back {
+    animation: iconGlow .8s ease forwards;
+}
+
+@keyframes iconGlow {
+
+    0% {
+        box-shadow: 0 0 0 transparent;
+    }
+
+    50% {
+        box-shadow:
+            0 0 20px currentColor,
+            0 0 40px currentColor;
+    }
+
+    100% {
+        box-shadow:
+            0 0 15px currentColor;
+    }
+}
+
+/* DOCK HOVER */
+.contact-dock:hover .letter {
+    transition: transform .3s ease;
+}
+
+/* NEIGHBOUR EFFECT */
+.letter:hover + .letter {
+    transform: translateY(-6px) scale(1.08);
+}
+
+.letter:has(+ .letter:hover) {
+    transform: translateY(-6px) scale(1.08);
+}
+
+/* MOBILE */
+@media(max-width:600px) {
+
+    .contact-dock {
+        gap: 3px;
+        padding: 10px;
+    }
+
+    .letter {
+        width: 42px;
+        height: 42px;
+    }
+
+    .front {
+        font-size: 16px;
+    }
+
+    .back {
+        font-size: 18px;
+    }
+}
+
+
+
+
+
+
