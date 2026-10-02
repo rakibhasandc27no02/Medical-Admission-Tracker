@@ -1883,38 +1883,39 @@
                 // Slice required count
                 const selected = filtered.slice(0, Math.min(count, filtered.length));
 
-                // Reshuffle options for each question without breaking the correct answer index
+               // Reshuffle options for each question without breaking the correct answer index
                 return selected.map(q => {
                     const optionsWithIndex = q.options.map((opt, idx) => ({
                         text: opt,
                         isCorrect: idx === q.answer
                     }));
 
-                    // Shuffle options array
+                    // Shuffle options
                     for (let i = optionsWithIndex.length - 1; i > 0; i--) {
                         const j = Math.floor(Math.random() * (i + 1));
                         [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
                     }
 
                     const newOptions = optionsWithIndex.map(o => o.text);
-                    const newCorrectIndex = optionsWithIndex.findIndex(o => o.isCorrect);
+                    const newAnswer = optionsWithIndex.findIndex(o => o.isCorrect);
 
                     return {
                         ...q,
                         options: newOptions,
-                        answer: newCorrectIndex
+                        answer: newAnswer
                     };
                 });
             }
 
-            // Start Exam Engine
+            // Start Exam Process
             startExamWithConfig() {
-                const preparedQuestions = this.shuffleQuestionsAndOptions(QUESTION_BANK, this.setup.questionsCount);
+                const count = this.setup.questionsCount;
+                const questions = this.shuffleQuestionsAndOptions(QUESTION_BANK, count);
 
                 this.examState = {
-                    questions: preparedQuestions,
-                    userAnswers: new Array(preparedQuestions.length).fill(null),
-                    markedForReview: new Array(preparedQuestions.length).fill(false),
+                    questions: questions,
+                    userAnswers: new Array(questions.length).fill(null),
+                    markedForReview: new Array(questions.length).fill(false),
                     currentIndex: 0,
                     timerSeconds: this.setup.durationMins * 60,
                     timerInterval: null,
@@ -1922,113 +1923,119 @@
                     submitted: false
                 };
 
-                // Badge Text
-                const badge = document.getElementById('exam-mode-badge');
-                if (badge) {
-                    const modeMap = { 'random': 'র্যান্ডম মিক্সড', 'model': 'মডেল টেস্ট', 'previous': 'বিগত বছর' };
-                    badge.innerText = modeMap[this.setup.mode] || 'মডেল টেস্ট';
-                }
-
-                this.showView('exam');
                 this.renderQuestion();
                 this.renderPalette();
                 this.startTimer();
+                this.showView('exam');
             }
 
+            // Timer Controls
             startTimer() {
                 if (this.examState.timerInterval) clearInterval(this.examState.timerInterval);
+                
+                const updateTimerDisplay = () => {
+                    const mins = Math.floor(this.examState.timerSeconds / 60);
+                    const secs = this.examState.timerSeconds % 60;
+                    document.getElementById('exam-timer').innerText = 
+                        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                };
 
-                const timerDisplay = document.getElementById('exam-timer');
-                const timerBox = document.getElementById('timer-box');
+                updateTimerDisplay();
 
                 this.examState.timerInterval = setInterval(() => {
-                    if (this.examState.timerSeconds <= 0) {
-                        clearInterval(this.examState.timerInterval);
-                        this.submitExam(true); // Auto submit
-                        return;
-                    }
-
                     this.examState.timerSeconds--;
                     this.examState.timeUsedSeconds++;
 
-                    // Format MM:SS
-                    const m = Math.floor(this.examState.timerSeconds / 60);
-                    const s = this.examState.timerSeconds % 60;
-                    if (timerDisplay) {
-                        timerDisplay.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                    }
-
-                    // 5-minute warning alert (300 seconds)
-                    if (this.examState.timerSeconds === 300) {
-                        if (timerBox) {
-                            timerBox.classList.add('bg-red-100', 'text-red-700', 'animate-pulse');
-                        }
+                    if (this.examState.timerSeconds <= 0) {
+                        clearInterval(this.examState.timerInterval);
+                        this.submitExam();
+                    } else {
+                        updateTimerDisplay();
                     }
                 }, 1000);
             }
 
+            // Render Current Question
             renderQuestion() {
-                const q = this.examState.questions[this.examState.currentIndex];
-                if (!q) return;
-
-                // Update Progress Header
-                document.getElementById('exam-progress-text').innerText = `প্রশ্ন: ${this.examState.currentIndex + 1} / ${this.examState.questions.length}`;
+                const idx = this.examState.currentIndex;
+                const q = this.examState.questions[idx];
 
                 // Meta Info
-                const subMap = { biology: 'জীববিজ্ঞান', chemistry: 'রসায়ন', physics: 'পদার্থবিজ্ঞান', english: 'ইংরেজি', gk: 'সাধারণ জ্ঞান' };
-                document.getElementById('q-subject').innerText = subMap[q.subject] || q.subject;
-                document.getElementById('q-source').innerText = q.year ? `${q.source} (${q.year})` : q.source;
+                document.getElementById('exam-progress-text').innerText = `প্রশ্ন: ${idx + 1} / ${this.examState.questions.length}`;
+                document.getElementById('q-subject').innerText = q.subject;
+                document.getElementById('q-source').innerText = q.source;
                 document.getElementById('q-difficulty').innerText = q.difficulty;
-
-                // Question Text
-                document.getElementById('q-text').innerText = `${this.examState.currentIndex + 1}. ${q.question}`;
+                document.getElementById('q-text').innerText = `${idx + 1}. ${q.question}`;
 
                 // Options
                 const optionsContainer = document.getElementById('q-options');
                 optionsContainer.innerHTML = '';
 
-                const optionLetters = ['ক', 'খ', 'গ', 'ঘ'];
-                const selectedOpt = this.examState.userAnswers[this.examState.currentIndex];
+                const optionLabels = ['A', 'B', 'C', 'D'];
+                q.options.forEach((optText, optIdx) => {
+                    const isSelected = this.examState.userAnswers[idx] === optIdx;
+                    const btn = document.createElement('button');
+                    btn.className = `w-full text-right p-4 rounded-2xl border transition flex items-center justify-between ${
+                        isSelected 
+                            ? 'border-medical-600 bg-medical-50 dark:bg-medical-900/40 text-medical-800 dark:text-medical-200 font-bold' 
+                            : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200'
+                    }`;
+                    btn.onclick = () => this.selectOption(optIdx);
 
-                q.options.forEach((optText, idx) => {
-                    const isSelected = selectedOpt === idx;
-                    const optBtn = document.createElement('button');
-                    optBtn.type = 'button';
-                    optBtn.onclick = () => this.selectOption(idx);
-
-                    optBtn.className = isSelected
-                        ? "w-full text-right p-4 rounded-2xl border-2 border-medical-600 bg-medical-50 dark:bg-medical-950/60 font-medium text-gray-900 dark:text-white transition flex items-center justify-between shadow-sm"
-                        : "w-full text-right p-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/40 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium text-gray-800 dark:text-gray-200 transition flex items-center justify-between";
-
-                    optBtn.innerHTML = `
+                    btn.innerHTML = `
                         <div class="flex items-center space-x-3 space-x-reverse">
-                            <span class="w-7 h-7 rounded-lg ${isSelected ? 'bg-medical-600 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200'} text-xs font-bold flex items-center justify-center">
-                                ${optionLetters[idx]}
-                            </span>
+                            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
+                                isSelected ? 'bg-medical-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                            }">${optionLabels[optIdx]}</span>
                             <span class="text-sm sm:text-base">${optText}</span>
                         </div>
-                        ${isSelected ? '<i class="fa-solid fa-circle-check text-medical-600 text-lg"></i>' : ''}
                     `;
-                    optionsContainer.appendChild(optBtn);
+                    optionsContainer.appendChild(btn);
                 });
 
-                // Review Button Active State
-                const isMarked = this.examState.markedForReview[this.examState.currentIndex];
-                const markBtn = document.getElementById('btn-mark-review');
-                if (markBtn) {
-                    if (isMarked) {
-                        markBtn.className = "px-3 py-2 rounded-xl bg-amber-500 text-white font-semibold text-xs transition flex items-center shadow-sm";
-                    } else {
-                        markBtn.className = "px-3 py-2 rounded-xl border border-amber-400 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40 font-semibold text-xs transition flex items-center";
-                    }
+                // Review Button State
+                const reviewBtn = document.getElementById('btn-mark-review');
+                if (this.examState.markedForReview[idx]) {
+                    reviewBtn.className = "px-3 py-2 rounded-xl bg-amber-500 text-white font-semibold text-xs transition flex items-center";
+                } else {
+                    reviewBtn.className = "px-3 py-2 rounded-xl border border-amber-400 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40 font-semibold text-xs transition flex items-center";
                 }
 
-                // Prev/Next Button disable states
-                document.getElementById('btn-prev-q').disabled = this.examState.currentIndex === 0;
+                // Nav Buttons
+                document.getElementById('btn-prev-q').disabled = idx === 0;
+                document.getElementById('btn-next-q').disabled = idx === this.examState.questions.length - 1;
             }
 
-            selectOption(optionIndex) {
-                this.examState.userAnswers[this.examState.currentIndex] = optionIndex;
+            // Render Side Palette Grid
+            renderPalette() {
+                const paletteGrid = document.getElementById('q-palette-grid');
+                paletteGrid.innerHTML = '';
+
+                this.examState.questions.forEach((_, idx) => {
+                    const btn = document.createElement('button');
+                    const isCurrent = idx === this.examState.currentIndex;
+                    const isAnswered = this.examState.userAnswers[idx] !== null;
+                    const isMarked = this.examState.markedForReview[idx];
+
+                    let bgClass = "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300";
+                    if (isMarked) bgClass = "bg-amber-400 text-white font-bold";
+                    else if (isAnswered) bgClass = "bg-emerald-500 text-white font-bold";
+
+                    let borderClass = isCurrent ? "ring-2 ring-medical-600 ring-offset-2" : "";
+
+                    btn.className = `h-9 w-9 rounded-xl text-xs font-bold flex items-center justify-center transition ${bgClass} ${borderClass}`;
+                    btn.innerText = idx + 1;
+                    btn.onclick = () => {
+                        this.examState.currentIndex = idx;
+                        this.renderQuestion();
+                        this.renderPalette();
+                    };
+                    paletteGrid.appendChild(btn);
+                });
+            }
+
+            selectOption(optIdx) {
+                this.examState.userAnswers[this.examState.currentIndex] = optIdx;
                 this.renderQuestion();
                 this.renderPalette();
             }
@@ -2040,8 +2047,8 @@
             }
 
             toggleMarkReview() {
-                const curr = this.examState.currentIndex;
-                this.examState.markedForReview[curr] = !this.examState.markedForReview[curr];
+                const idx = this.examState.currentIndex;
+                this.examState.markedForReview[idx] = !this.examState.markedForReview[idx];
                 this.renderQuestion();
                 this.renderPalette();
             }
@@ -2062,64 +2069,13 @@
                 }
             }
 
-            jumpToQuestion(index) {
-                this.examState.currentIndex = index;
-                this.renderQuestion();
-                this.renderPalette();
-            }
-
-            renderPalette() {
-                const grid = document.getElementById('q-palette-grid');
-                if (!grid) return;
-                grid.innerHTML = '';
-
-                this.examState.questions.forEach((q, idx) => {
-                    const isCurrent = idx === this.examState.currentIndex;
-                    const isAnswered = this.examState.userAnswers[idx] !== null;
-                    const isMarked = this.examState.markedForReview[idx];
-
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.onclick = () => this.jumpToQuestion(idx);
-
-                    let classNames = "w-9 h-9 rounded-xl font-bold text-xs flex items-center justify-center transition border ";
-
-                    if (isCurrent) {
-                        classNames += "border-2 border-medical-600 font-extrabold shadow-md ";
-                    } else {
-                        classNames += "border-transparent ";
-                    }
-
-                    if (isMarked) {
-                        classNames += "bg-amber-400 text-gray-900";
-                    } else if (isAnswered) {
-                        classNames += "bg-emerald-500 text-white";
-                    } else {
-                        classNames += "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200";
-                    }
-
-                    btn.className = classNames;
-                    btn.innerText = idx + 1;
-                    grid.appendChild(btn);
-                });
-            }
-
             confirmSubmitExam() {
-                const answeredCount = this.examState.userAnswers.filter(a => a !== null).length;
-                const total = this.examState.questions.length;
-
-                if (confirm(`আপনি কি নিশ্চিত যে পরীক্ষা জমা দিতে চান?\n\nমোট প্রশ্ন: ${total}\nউত্তর দেওয়া হয়েছে: ${answeredCount} টি`)) {
-                    this.submitExam(false);
+                if (confirm("আপনি কি নিশ্চিত যে পরীক্ষা জমা দিতে চান?")) {
+                    this.submitExam();
                 }
             }
 
-            /**
-             * Score Calculation:
-             * Correct = +1.00
-             * Wrong = -0.25
-             * Skipped = 0.00
-             */
-            submitExam(isAutoSubmit = false) {
+            submitExam() {
                 if (this.examState.timerInterval) clearInterval(this.examState.timerInterval);
                 this.examState.submitted = true;
 
@@ -2127,117 +2083,56 @@
                 let wrongCount = 0;
                 let skippedCount = 0;
 
-                const subjectPerf = {
-                    biology: { correct: 0, wrong: 0, total: 0 },
-                    chemistry: { correct: 0, wrong: 0, total: 0 },
-                    physics: { correct: 0, wrong: 0, total: 0 },
-                    english: { correct: 0, wrong: 0, total: 0 },
-                    gk: { correct: 0, wrong: 0, total: 0 }
-                };
-
                 this.examState.questions.forEach((q, idx) => {
-                    const userAns = this.examState.userAnswers[idx];
-                    if (!subjectPerf[q.subject]) {
-                        subjectPerf[q.subject] = { correct: 0, wrong: 0, total: 0 };
-                    }
-                    subjectPerf[q.subject].total++;
-
-                    if (userAns === null) {
+                    const ans = this.examState.userAnswers[idx];
+                    if (ans === null) {
                         skippedCount++;
-                    } else if (userAns === q.answer) {
+                    } else if (ans === q.answer) {
                         correctCount++;
-                        subjectPerf[q.subject].correct++;
                     } else {
                         wrongCount++;
-                        subjectPerf[q.subject].wrong++;
                     }
                 });
 
                 const negativeMarks = wrongCount * 0.25;
-                const finalScore = Math.max(0, correctCount - negativeMarks);
+                const totalScore = Math.max(0, correctCount - negativeMarks);
                 const totalQuestions = this.examState.questions.length;
-                const percentage = ((finalScore / totalQuestions) * 100).toFixed(2);
-                const totalAttempted = correctCount + wrongCount;
-                const accuracy = totalAttempted > 0 ? ((correctCount / totalAttempted) * 100).toFixed(2) : '0.00';
+                const accuracy = (correctCount + wrongCount) > 0 
+                    ? ((correctCount / (correctCount + wrongCount)) * 100).toFixed(1) 
+                    : 0;
 
-                // Time String
-                const minsUsed = Math.floor(this.examState.timeUsedSeconds / 60);
-                const secsUsed = this.examState.timeUsedSeconds % 60;
-                const timeUsedStr = `${minsUsed.toString().padStart(2, '0')}:${secsUsed.toString().padStart(2, '0')}`;
-
-                // Save to LocalStorage
-                const attemptRecord = {
-                    id: Date.now(),
-                    date: new Date().toLocaleDateString('bn-BD'),
-                    mode: this.setup.mode,
-                    subject: this.setup.subject,
-                    totalQuestions,
-                    correctCount,
-                    wrongCount,
-                    skippedCount,
-                    negativeMarks,
-                    finalScore,
-                    accuracy,
-                    percentage,
-                    timeUsedStr
-                };
-
-                this.saveAttemptToStorage(attemptRecord);
-
-                // Populate Result View
-                document.getElementById('res-score-main').innerText = `${finalScore.toFixed(2)} / ${totalQuestions}`;
-                document.getElementById('res-percentage').innerText = `${percentage}%`;
+                // Update Results View UI
+                document.getElementById('res-score-main').innerText = `${totalScore.toFixed(2)} / ${totalQuestions}`;
+                document.getElementById('res-percentage').innerText = `${((totalScore / totalQuestions) * 100).toFixed(1)}%`;
                 document.getElementById('res-accuracy').innerText = `${accuracy}%`;
-
                 document.getElementById('res-correct').innerText = correctCount;
                 document.getElementById('res-wrong').innerText = wrongCount;
                 document.getElementById('res-skipped').innerText = skippedCount;
                 document.getElementById('res-negative').innerText = `-${negativeMarks.toFixed(2)}`;
 
-                document.getElementById('res-time-used').innerText = timeUsedStr;
+                const minsUsed = Math.floor(this.examState.timeUsedSeconds / 60);
+                const secsUsed = this.examState.timeUsedSeconds % 60;
+                document.getElementById('res-time-used').innerText = `${minsUsed}:${secsUsed.toString().padStart(2, '0')}`;
 
-                // Load Best Score
-                const history = this.getStorageHistory();
-                const bestScore = Math.max(...history.map(h => h.finalScore), finalScore);
-                document.getElementById('res-best-score').innerText = bestScore.toFixed(2);
-                document.getElementById('res-attempt-num').innerText = history.length;
-
-                // Subject Bars Render
-                const barsContainer = document.getElementById('res-subject-bars');
-                barsContainer.innerHTML = '';
-                const subNames = { biology: 'জীববিজ্ঞান', chemistry: 'রসায়ন', physics: 'পদার্থবিজ্ঞান', english: 'ইংরেজি', gk: 'সাধারণ জ্ঞান' };
-
-                Object.keys(subjectPerf).forEach(subKey => {
-                    const data = subjectPerf[subKey];
-                    if (data.total > 0) {
-                        const subScore = Math.max(0, data.correct - (data.wrong * 0.25));
-                        const subPct = ((subScore / data.total) * 100).toFixed(0);
-
-                        const div = document.createElement('div');
-                        div.className = "space-y-1";
-                        div.innerHTML = `
-                            <div class="flex justify-between text-xs font-semibold text-gray-700 dark:text-gray-300">
-                                <span>${subNames[subKey]} (${data.correct}/${data.total} সঠিক)</span>
-                                <span>${subScore.toFixed(2)} / ${data.total} (${subPct}%)</span>
-                            </div>
-                            <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                <div class="h-full bg-medical-600 rounded-full" style="width: ${Math.min(100, Math.max(0, subPct))}%"></div>
-                            </div>
-                        `;
-                        barsContainer.appendChild(div);
-                    }
+                // Save to LocalStorage
+                this.saveExamAttempt({
+                    date: new Date().toLocaleDateString('bn-BD'),
+                    mode: this.setup.mode,
+                    subject: document.getElementById('setup-subject').value,
+                    score: totalScore.toFixed(2),
+                    total: totalQuestions,
+                    accuracy: `${accuracy}%`,
+                    timeUsed: `${minsUsed}:${secsUsed.toString().padStart(2, '0')}`
                 });
 
                 this.showView('result');
-                this.loadProgressStats();
             }
 
-            // Show Detailed Answer Review View
             showReviewAnswersView() {
                 const container = document.getElementById('review-list-container');
                 container.innerHTML = '';
-                const optionLetters = ['ক', 'খ', 'গ', 'ঘ'];
-                const subMap = { biology: 'জীববিজ্ঞান', chemistry: 'রসায়ন', physics: 'পদার্থবিজ্ঞান', english: 'ইংরেজি', gk: 'সাধারণ জ্ঞান' };
+
+                const optionLabels = ['A', 'B', 'C', 'D'];
 
                 this.examState.questions.forEach((q, idx) => {
                     const userAns = this.examState.userAnswers[idx];
@@ -2245,46 +2140,41 @@
                     const isSkipped = userAns === null;
 
                     const card = document.createElement('div');
-                    card.className = "bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4";
+                    card.className = "bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-4 shadow-sm";
 
-                    let statusBadge = '';
+                    let statusBadge = `<span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">সঠিক</span>`;
                     if (isSkipped) {
-                        statusBadge = '<span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">উত্তর দেওয়া হয়নি (Skipped)</span>';
-                    } else if (isCorrect) {
-                        statusBadge = '<span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"><i class="fa-solid fa-check ml-1"></i> সঠিক উত্তর (+১.০০)</span>';
-                    } else {
-                        statusBadge = '<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300"><i class="fa-solid fa-xmark ml-1"></i> ভুল উত্তর (−০.২৫)</span>';
+                        statusBadge = `<span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">উত্তর দেওয়া হয়নি</span>`;
+                    } else if (!isCorrect) {
+                        statusBadge = `<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300">ভুল উত্তর</span>`;
                     }
 
-                    let optionsHtml = '';
-                    q.options.forEach((optText, oIdx) => {
-                        let optStyle = "p-3 rounded-xl text-sm font-medium border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 flex justify-between items-center";
-
-                        if (oIdx === q.answer) {
-                            optStyle = "p-3 rounded-xl text-sm font-bold border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-200 flex justify-between items-center";
-                        } else if (oIdx === userAns && !isCorrect) {
-                            optStyle = "p-3 rounded-xl text-sm font-bold border-2 border-red-500 bg-red-50 dark:bg-red-950/50 text-red-800 dark:text-red-200 flex justify-between items-center";
+                    let optionsHTML = q.options.map((opt, optIdx) => {
+                        let optStyle = "bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600";
+                        if (optIdx === q.answer) {
+                            optStyle = "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold";
+                        } else if (optIdx === userAns && !isCorrect) {
+                            optStyle = "bg-red-50 dark:bg-red-950/40 border-red-500 text-red-800 dark:text-red-300 font-bold";
                         }
 
-                        optionsHtml += `
-                            <div class="${optStyle}">
-                                <span>${optionLetters[oIdx]}. ${optText}</span>
-                                ${oIdx === q.answer ? '<span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">সঠিক উত্তর</span>' : ''}
-                                ${oIdx === userAns && !isCorrect ? '<span class="text-xs font-bold text-red-600 dark:text-red-400">আপনার পছন্দ</span>' : ''}
+                        return `
+                            <div class="p-3 rounded-xl border text-sm flex items-center justify-between ${optStyle}">
+                                <span>${optionLabels[optIdx]}. ${opt}</span>
+                                ${optIdx === q.answer ? '<i class="fa-solid fa-check text-emerald-600"></i>' : ''}
+                                ${optIdx === userAns && !isCorrect ? '<i class="fa-solid fa-xmark text-red-600"></i>' : ''}
                             </div>
                         `;
-                    });
+                    }).join('');
 
                     card.innerHTML = `
-                        <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-3">
-                            <span class="text-xs font-bold text-medical-600 dark:text-medical-400">${subMap[q.subject]}</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-medical-600 uppercase">${q.subject}</span>
                             ${statusBadge}
                         </div>
-                        <h4 class="text-base font-bold text-gray-900 dark:text-white">${idx + 1}. ${q.question}</h4>
-                        <div class="space-y-2">${optionsHtml}</div>
-                        <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 text-xs text-blue-900 dark:text-blue-200 space-y-1">
-                            <span class="font-bold block"><i class="fa-solid fa-lightbulb text-amber-500 ml-1"></i> ব্যাখ্যা:</span>
-                            <p class="leading-relaxed">${q.explanation}</p>
+                        <h4 class="font-bold text-gray-900 dark:text-white text-base">${idx + 1}. ${q.question}</h4>
+                        <div class="space-y-2">${optionsHTML}</div>
+                        <div class="p-3 bg-medical-50 dark:bg-medical-900/30 rounded-xl text-xs text-medical-800 dark:text-medical-300 border border-medical-100 dark:border-medical-800">
+                            <strong>ব্যাখ্যা:</strong> ${q.explanation}
                         </div>
                     `;
                     container.appendChild(card);
@@ -2293,79 +2183,63 @@
                 this.showView('review');
             }
 
-            saveAttemptToStorage(record) {
-                const history = this.getStorageHistory();
-                history.unshift(record);
-                localStorage.setItem('med_exam_history', JSON.stringify(history));
+            // LocalStorage and Analytics
+            saveExamAttempt(attempt) {
+                let history = JSON.parse(localStorage.getItem('med_history') || '[]');
+                history.unshift(attempt);
+                localStorage.setItem('med_history', JSON.stringify(history));
+                this.loadProgressStats();
             }
 
-            getStorageHistory() {
-                try {
-                    return JSON.parse(localStorage.getItem('med_exam_history')) || [];
-                } catch (e) {
-                    return [];
+            loadProgressStats() {
+                const history = JSON.parse(localStorage.getItem('med_history') || '[]');
+                
+                document.getElementById('dash-total-exams').innerText = history.length;
+                document.getElementById('prog-total-attempts').innerText = history.length;
+
+                if (history.length > 0) {
+                    const bestScore = Math.max(...history.map(h => parseFloat(h.score)));
+                    document.getElementById('dash-best-score').innerText = bestScore.toFixed(2);
+                    document.getElementById('prog-best-score').innerText = bestScore.toFixed(2);
+
+                    const avgAcc = (history.reduce((acc, curr) => acc + parseFloat(curr.accuracy), 0) / history.length).toFixed(1);
+                    document.getElementById('dash-avg-accuracy').innerText = `${avgAcc}%`;
+                    document.getElementById('prog-avg-accuracy').innerText = `${avgAcc}%`;
+
+                    const avgScore = (history.reduce((acc, curr) => acc + parseFloat(curr.score), 0) / history.length).toFixed(2);
+                    document.getElementById('prog-avg-score').innerText = avgScore;
+                }
+
+                // Table render
+                const tbody = document.getElementById('prog-history-tbody');
+                if (tbody) {
+                    tbody.innerHTML = '';
+                    history.slice(0, 10).forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition";
+                        tr.innerHTML = `
+                            <td class="py-3 px-4 font-medium">${item.date}</td>
+                            <td class="py-3 px-4 capitalize">${item.mode}</td>
+                            <td class="py-3 px-4">${item.subject}</td>
+                            <td class="py-3 px-4 font-bold text-medical-600">${item.score} / ${item.total}</td>
+                            <td class="py-3 px-4">${item.accuracy}</td>
+                            <td class="py-3 px-4 text-gray-500">${item.timeUsed}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
                 }
             }
 
             clearStorageHistory() {
-                if (confirm("আপনি কি সমস্ত পরীক্ষার রেকর্ড মুছতে চান?")) {
-                    localStorage.removeItem('med_exam_history');
+                if (confirm("আপনি কি সমস্ত পরীক্ষার ইতিহাস মুছে ফেলতে চান?")) {
+                    localStorage.removeItem('med_history');
                     this.loadProgressStats();
                 }
             }
-
-            loadProgressStats() {
-                const history = this.getStorageHistory();
-
-                // Dashboard stats
-                document.getElementById('dash-total-exams').innerText = history.length;
-                if (history.length > 0) {
-                    const best = Math.max(...history.map(h => h.finalScore));
-                    const avgAcc = (history.reduce((a, b) => a + parseFloat(b.accuracy), 0) / history.length).toFixed(1);
-                    document.getElementById('dash-best-score').innerText = best.toFixed(2);
-                    document.getElementById('dash-avg-accuracy').innerText = `${avgAcc}%`;
-
-                    // Progress View Stats
-                    document.getElementById('prog-total-attempts').innerText = history.length;
-                    document.getElementById('prog-best-score').innerText = best.toFixed(2);
-                    const avgScore = (history.reduce((a, b) => a + b.finalScore, 0) / history.length).toFixed(2);
-                    document.getElementById('prog-avg-score').innerText = avgScore;
-                    document.getElementById('prog-avg-accuracy').innerText = `${avgAcc}%`;
-                }
-
-                // Table
-                const tbody = document.getElementById('prog-history-tbody');
-                if (!tbody) return;
-                tbody.innerHTML = '';
-
-                if (history.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-gray-400 text-xs">এখনও কোনো পরীক্ষা সম্পন্ন হয়নি।</td></tr>';
-                    return;
-                }
-
-                const modeMap = { 'random': 'র্যান্ডম মিক্সড', 'model': 'মডেল টেস্ট', 'previous': 'বিগত বছর' };
-
-                history.slice(0, 10).forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition text-gray-700 dark:text-gray-300";
-                    tr.innerHTML = `
-                        <td class="py-3 px-4 text-xs font-medium">${item.date}</td>
-                        <td class="py-3 px-4 text-xs font-bold text-medical-600">${modeMap[item.mode] || item.mode}</td>
-                        <td class="py-3 px-4 text-xs">${item.subject === 'all' ? 'সকল বিষয়' : item.subject}</td>
-                        <td class="py-3 px-4 text-xs font-extrabold text-emerald-600">${item.finalScore.toFixed(2)} / ${item.totalQuestions}</td>
-                        <td class="py-3 px-4 text-xs">${item.accuracy}%</td>
-                        <td class="py-3 px-4 text-xs">${item.timeUsedStr}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
         }
 
-        // Initialize App on Window Load
-        let app;
-        window.onload = function() {
-            app = new MedicalExamApp();
-        };
+        // Initialize App Globally
+        const app = new MedicalExamApp();
     </script>
 </body>
 </html>
