@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://serakib.github.io/Medical-Admission-Tracker/sitemap.xml
