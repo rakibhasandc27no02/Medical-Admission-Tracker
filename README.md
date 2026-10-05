@@ -16,3 +16,13 @@ Polished static medical admission preparation app.
 
 ## Run
 Serve the folder from a web server (for example GitHub Pages or VS Code Live Server).
+
+
+## Leaderboard / Profile update
+- Profile is available from the desktop nav, mobile menu, and Home shortcut card.
+- Leaderboard starts with 8 local demo students so the page is not empty on a fresh device.
+- Leaderboard data is stored in LocalStorage for instant display/offline continuity.
+- Logged-in user results update LocalStorage immediately and sync to Firestore in the background.
+- Failed Firebase writes are queued locally and retried on the next leaderboard refresh when Firebase is available.
+- Demo rows are local-only and are never written to Firestore.
+- Real Firebase sync requires the existing project web config in `js/firebase-config.js`; credentials were not present in the supplied source, so no credentials were invented.

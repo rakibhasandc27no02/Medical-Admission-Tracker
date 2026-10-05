@@ -19,7 +19,9 @@ class MedicalExamApp {
                 this.bankSearch = '';
                 this.practiceIndex = 0;
                 this.practiceSession = null;
-                this.leaderboardCacheKey = 'med_leaderboard_cache_v4';
+                this.leaderboardCacheKey = 'med_leaderboard_cache_v5';
+                this.leaderboardLocalKey = 'med_leaderboard_local_v1';
+                this.leaderboardSyncKey = 'med_leaderboard_sync_queue_v1';
                 this.firestore = null;
                 this.profile = null;
                 
@@ -462,8 +464,56 @@ class MedicalExamApp {
             startPreviousYearQuiz(){ if(!this.previousSelectedYear) return; this.setup.mode='previousQuiz'; this.setup.subject='all'; this.setup.questionsCount=Math.min(20,this.questionBank.filter(q=>q.year===this.previousSelectedYear&&q.isPreviousYear).length); this.setup.durationMins=10; const ys=document.getElementById('setup-year'); if(ys) ys.value=this.previousSelectedYear; this.prepareExamFromSetup(); }
 
             async loadUserProfile(){ if(!this.firestore||!this.authUser) return; try{ const snap=await this.firestore.collection('students').doc(this.authUser.uid).get(); this.profile=snap.exists?snap.data():{name:this.authUser.displayName||'',email:this.authUser.email||''}; this.loadProgressStats(); }catch(e){console.warn('Profile load failed',e);} }
+
+            getDemoLeaderboardRows(){
+                return [
+                    {uid:'demo_01',name:'Arafat Hossain',college:'Dhaka College',points:1860,quizzes:18,correct:470,answered:520,accuracy:90.4,isDemo:true},
+                    {uid:'demo_02',name:'Samiha Rahman',college:'Viqarunnisa Noon College',points:1725,quizzes:16,correct:438,answered:500,accuracy:87.6,isDemo:true},
+                    {uid:'demo_03',name:'Tanvir Ahmed',college:'Notre Dame College',points:1580,quizzes:15,correct:402,answered:470,accuracy:85.5,isDemo:true},
+                    {uid:'demo_04',name:'Nusrat Jahan',college:'Holy Cross College',points:1495,quizzes:14,correct:381,answered:450,accuracy:84.7,isDemo:true},
+                    {uid:'demo_05',name:'Fahim Hasan',college:'Rajuk Uttara Model College',points:1360,quizzes:13,correct:352,answered:425,accuracy:82.8,isDemo:true},
+                    {uid:'demo_06',name:'Mahi Islam',college:'Adamjee Cantonment College',points:1240,quizzes:12,correct:329,answered:400,accuracy:82.3,isDemo:true},
+                    {uid:'demo_07',name:'Rafiul Karim',college:'Dhaka City College',points:1125,quizzes:11,correct:300,answered:375,accuracy:80.0,isDemo:true},
+                    {uid:'demo_08',name:'Jannatul Ferdous',college:'Cantonment Public School & College',points:1010,quizzes:10,correct:272,answered:350,accuracy:77.7,isDemo:true}
+                ];
+            }
+            getLocalLeaderboardRows(){
+                try{
+                    const raw=JSON.parse(localStorage.getItem(this.leaderboardLocalKey)||'null');
+                    if(Array.isArray(raw)&&raw.length)return raw;
+                }catch(e){}
+                const rows=this.getDemoLeaderboardRows(); this.setLocalLeaderboardRows(rows); return rows;
+            }
+            setLocalLeaderboardRows(rows){
+                const safe=(Array.isArray(rows)?rows:[]).map(x=>({...x,points:Number(x.points||0),quizzes:Number(x.quizzes||0),correct:Number(x.correct||0),answered:Number(x.answered||0),accuracy:Number(x.accuracy||0)}));
+                localStorage.setItem(this.leaderboardLocalKey,JSON.stringify(safe));
+                this.setLeaderboardCache(safe);
+                return safe;
+            }
             getLeaderboardCache(){ try{return JSON.parse(localStorage.getItem(this.leaderboardCacheKey)||'null');}catch{return null;} }
             setLeaderboardCache(rows){ localStorage.setItem(this.leaderboardCacheKey,JSON.stringify({savedAt:Date.now(),rows})); }
+            getLeaderboardSyncQueue(){ try{const q=JSON.parse(localStorage.getItem(this.leaderboardSyncKey)||'[]');return Array.isArray(q)?q:[];}catch{return [];} }
+            setLeaderboardSyncQueue(q){ localStorage.setItem(this.leaderboardSyncKey,JSON.stringify(q)); }
+            queueLeaderboardSync(payload){ const q=this.getLeaderboardSyncQueue().filter(x=>x.uid!==payload.uid); q.push(payload); this.setLeaderboardSyncQueue(q); }
+            getLeaderboardRowTime(row){
+                if(!row) return 0;
+                if(Number(row.updatedAtMs||0)) return Number(row.updatedAtMs);
+                const stamp=row.updatedAt;
+                if(stamp && typeof stamp.toMillis==='function') return stamp.toMillis();
+                if(stamp && Number(stamp.seconds)) return Number(stamp.seconds)*1000;
+                return 0;
+            }
+            mergeLeaderboardRows(remoteRows=[]){
+                const demos=this.getDemoLeaderboardRows();
+                const local=this.getLocalLeaderboardRows();
+                const map=new Map();
+                [...demos,...local,...(Array.isArray(remoteRows)?remoteRows:[])].forEach(row=>{
+                    if(!row?.uid)return;
+                    const old=map.get(row.uid);
+                    if(!old || this.getLeaderboardRowTime(row)>=this.getLeaderboardRowTime(old)){ map.set(row.uid,{...old,...row}); }
+                });
+                return [...map.values()].sort((a,b)=>Number(b.points||0)-Number(a.points||0));
+            }
             renderLeaderboardRows(rows){
                 const body=document.getElementById('leaderboard-body'); if(!body)return;
                 const safe=Array.isArray(rows)?rows:[];
@@ -487,29 +537,70 @@ class MedicalExamApp {
                 if(me && mine){ me.classList.remove('hidden'); me.innerHTML=`<div><span>Your Position</span><strong>#${safe.indexOf(mine)+1}</strong></div><div><b>${this.escapeHtml(mine.name||'Student')}</b><small>${Number(mine.accuracy||0).toFixed(1)}% accuracy • ${Number(mine.points||0)} points</small></div>`; }
             }
             async recordLeaderboardResult({correctCount,wrongCount,totalQuestions,quizPoints,accuracy}){
-                if(!this.authUser||!this.firestore)return;
-                const attemptId=`${this.authUser.uid}_${this.examState.startedAt}`;
+                const uid=this.authUser?.uid || 'guest_local';
+                const name=this.profile?.name||this.authUser?.displayName||this.authUser?.email||'Guest Student';
+                const college=this.profile?.college||'';
+                const current=this.getLocalLeaderboardRows().find(x=>x.uid===uid)||{uid,name,college,points:0,quizzes:0,correct:0,answered:0};
+                const nextCorrect=Number(current.correct||0)+Number(correctCount||0);
+                const nextAnswered=Number(current.answered||0)+Number(correctCount||0)+Number(wrongCount||0);
+                const updated={...current,name,college,points:Number(current.points||0)+Number(quizPoints||0),quizzes:Number(current.quizzes||0)+1,correct:nextCorrect,answered:nextAnswered,accuracy:Number((nextCorrect/Math.max(1,nextAnswered)*100).toFixed(1)),updatedAtMs:Date.now(),isDemo:false};
+                const rows=this.getLocalLeaderboardRows().filter(x=>x.uid!==uid);
+                rows.push(updated);
+                const merged=this.mergeLeaderboardRows(rows);
+                this.setLocalLeaderboardRows(merged);
+                this.renderLeaderboardRows(merged);
+
+                if(!this.authUser||!this.firestore){
+                    if(this.authUser) this.queueLeaderboardSync({...updated, meta:{correctCount,wrongCount,totalQuestions,quizPoints,accuracy}});
+                    return;
+                }
+                await this.syncLeaderboardUser(updated, {correctCount,wrongCount,totalQuestions,quizPoints,accuracy});
+            }
+            async syncLeaderboardUser(updated, meta={}){
+                if(!this.authUser||!this.firestore)return false;
+                const attemptId=`${this.authUser.uid}_${this.examState.startedAt||Date.now()}`;
                 try{
                     const attemptRef=this.firestore.collection('quizAttempts').doc(attemptId);
-                    const existing=await attemptRef.get(); if(existing.exists)return;
-                    const ref=this.firestore.collection('leaderboard').doc(this.authUser.uid); const snap=await ref.get(); const old=snap.exists?snap.data():{};
-                    const nextCorrect=(old.correct||0)+correctCount, nextAnswered=(old.answered||0)+correctCount+wrongCount;
+                    const existing=await attemptRef.get(); if(existing.exists)return true;
                     await this.firestore.runTransaction(async tx=>{
-                        tx.set(attemptRef,{uid:this.authUser.uid,quizPoints:Number(quizPoints)||0,correct:correctCount,wrong:wrongCount,total:totalQuestions,accuracy:Number(accuracy)||0,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-                        tx.set(ref,{uid:this.authUser.uid,name:this.profile?.name||this.authUser.displayName||'Student',college:this.profile?.college||'',points:(old.points||0)+(Number(quizPoints)||0),quizzes:(old.quizzes||0)+1,correct:nextCorrect,answered:nextAnswered,accuracy:Number((nextCorrect/Math.max(1,nextAnswered)*100).toFixed(1)),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+                        tx.set(attemptRef,{uid:this.authUser.uid,quizPoints:Number(meta.quizPoints)||0,correct:Number(meta.correctCount)||0,wrong:Number(meta.wrongCount)||0,total:Number(meta.totalQuestions)||0,accuracy:Number(meta.accuracy)||0,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+                        tx.set(this.firestore.collection('leaderboard').doc(this.authUser.uid),{uid:this.authUser.uid,name:updated.name,college:updated.college,points:updated.points,quizzes:updated.quizzes,correct:updated.correct,answered:updated.answered,accuracy:updated.accuracy,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
                     });
-                    this.loadLeaderboard(true);
-                }catch(e){ console.error('Leaderboard write failed',e); this.showLeaderboardStatus(this.t('Leaderboard sync failed. Your result is still saved locally.','লিডারবোর্ড sync হয়নি। আপনার ফলাফল local-এ সংরক্ষিত আছে।'),true); }
+                    this.setLeaderboardSyncQueue(this.getLeaderboardSyncQueue().filter(x=>x.uid!==updated.uid));
+                    return true;
+                }catch(e){
+                    console.error('Leaderboard write failed',e);
+                    this.queueLeaderboardSync({...updated, meta});
+                    this.showLeaderboardStatus('Firebase sync হয়নি — local data নিরাপদে সংরক্ষিত আছে।',true);
+                    return false;
+                }
+            }
+            async syncPendingLeaderboard(){
+                if(!this.authUser||!this.firestore)return;
+                const pending=this.getLeaderboardSyncQueue().filter(x=>x.uid===this.authUser.uid);
+                for(const row of pending){ await this.syncLeaderboardUser(row,row.meta||{}); }
             }
             async loadLeaderboard(silent=false){
                 const body=document.getElementById('leaderboard-body'); if(!body)return;
-                const cache=this.getLeaderboardCache();
-                if(cache?.rows?.length){this.renderLeaderboardRows(cache.rows); if(!silent)this.showLeaderboardStatus(this.t('Showing saved leaderboard while checking for updates…','সংরক্ষিত লিডারবোর্ড দেখানো হচ্ছে, নতুন তথ্য খোঁজা হচ্ছে…'),false);}
-                if(!this.firestore){ if(!cache?.rows?.length)this.showLeaderboardStatus(this.t('Leaderboard is unavailable. Enable Firestore.','লিডারবোর্ড পাওয়া যাচ্ছে না। Firestore চালু করুন।'),true); return; }
+                const local=this.getLocalLeaderboardRows();
+                this.renderLeaderboardRows(local);
+                if(!silent)this.showLeaderboardStatus('Local leaderboard দেখানো হচ্ছে; Firebase background sync চলছে…',false);
+                if(!this.firestore){
+                    if(!silent)this.showLeaderboardStatus('Local leaderboard active — Firebase config পাওয়া যায়নি।',false);
+                    return;
+                }
                 try{
+                    await this.syncPendingLeaderboard();
                     const snap=await this.firestore.collection('leaderboard').orderBy('points','desc').limit(100).get();
-                    const rows=snap.docs.map(d=>({uid:d.id,...d.data()})); this.setLeaderboardCache(rows); this.renderLeaderboardRows(rows); this.showLeaderboardStatus(this.t('Leaderboard updated silently.','লিডারবোর্ড নীরবে আপডেট হয়েছে।'),false);
-                }catch(e){console.error(e); if(cache?.rows?.length)this.showLeaderboardStatus(this.t('Showing last saved leaderboard.','সর্বশেষ সংরক্ষিত লিডারবোর্ড দেখানো হচ্ছে।'),false); else this.showLeaderboardStatus(this.t('Could not load leaderboard. Check Firestore rules.','লিডারবোর্ড লোড করা যায়নি। Firestore Rules পরীক্ষা করুন।'),true);}
+                    const remote=snap.docs.map(d=>({uid:d.id,...d.data()}));
+                    const rows=this.mergeLeaderboardRows(remote);
+                    this.setLocalLeaderboardRows(rows);
+                    this.renderLeaderboardRows(rows);
+                    this.showLeaderboardStatus('Leaderboard Firebase থেকে sync হয়েছে এবং local-এ cache করা হয়েছে।',false);
+                }catch(e){
+                    console.error(e);
+                    this.showLeaderboardStatus('Firebase unavailable — সর্বশেষ local leaderboard দেখানো হচ্ছে।',false);
+                }
             }
             showLeaderboardStatus(msg,error){const el=document.getElementById('leaderboard-status');if(!el)return;el.textContent=msg;el.className=`mb-4 rounded-xl p-3 text-sm ${error?'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-300':'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300'}`;}
 
@@ -575,6 +666,12 @@ class MedicalExamApp {
             showProfile() {
                 this.showView('profile');
                 this.loadProgressStats();
+                const profile = document.getElementById('view-profile');
+                if (profile) profile.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            openProfile() {
+                this.showProfile();
             }
 
             // View Switching
