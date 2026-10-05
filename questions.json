@@ -2943,7 +2943,7 @@
     "id": "practice_0191",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -2958,7 +2958,7 @@
     "id": "practice_0192",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -2973,7 +2973,7 @@
     "id": "practice_0193",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -2988,7 +2988,7 @@
     "id": "practice_0194",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -3003,7 +3003,7 @@
     "id": "practice_0195",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -3018,7 +3018,7 @@
     "id": "practice_0196",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -3033,7 +3033,7 @@
     "id": "practice_0197",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -3048,7 +3048,7 @@
     "id": "practice_0198",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -3063,7 +3063,7 @@
     "id": "practice_0199",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -3078,7 +3078,7 @@
     "id": "practice_0200",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -3093,7 +3093,7 @@
     "id": "practice_0201",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -3108,7 +3108,7 @@
     "id": "practice_0202",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -3123,7 +3123,7 @@
     "id": "practice_0203",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -3138,7 +3138,7 @@
     "id": "practice_0204",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -3153,7 +3153,7 @@
     "id": "practice_0205",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -3168,7 +3168,7 @@
     "id": "practice_0206",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -3183,7 +3183,7 @@
     "id": "practice_0207",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -3198,7 +3198,7 @@
     "id": "practice_0208",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -3213,7 +3213,7 @@
     "id": "practice_0209",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -3228,7 +3228,7 @@
     "id": "practice_0210",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -3243,7 +3243,7 @@
     "id": "practice_0211",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -3258,7 +3258,7 @@
     "id": "practice_0212",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -3273,7 +3273,7 @@
     "id": "practice_0213",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -3288,7 +3288,7 @@
     "id": "practice_0214",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -3303,7 +3303,7 @@
     "id": "practice_0215",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -3318,7 +3318,7 @@
     "id": "practice_0216",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -3333,7 +3333,7 @@
     "id": "practice_0217",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -3348,7 +3348,7 @@
     "id": "practice_0218",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -3363,7 +3363,7 @@
     "id": "practice_0219",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -3378,7 +3378,7 @@
     "id": "practice_0220",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -3393,7 +3393,7 @@
     "id": "practice_0221",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -3408,7 +3408,7 @@
     "id": "practice_0222",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -3423,7 +3423,7 @@
     "id": "practice_0223",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -3438,7 +3438,7 @@
     "id": "practice_0224",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -3453,7 +3453,7 @@
     "id": "practice_0225",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -3468,7 +3468,7 @@
     "id": "practice_0226",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -3483,7 +3483,7 @@
     "id": "practice_0227",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -3498,7 +3498,7 @@
     "id": "practice_0228",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -3513,7 +3513,7 @@
     "id": "practice_0229",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -3528,7 +3528,7 @@
     "id": "practice_0230",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -3543,7 +3543,7 @@
     "id": "practice_0231",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -3558,7 +3558,7 @@
     "id": "practice_0232",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -3573,7 +3573,7 @@
     "id": "practice_0233",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -3588,7 +3588,7 @@
     "id": "practice_0234",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -3603,7 +3603,7 @@
     "id": "practice_0235",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -3618,7 +3618,7 @@
     "id": "practice_0236",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -3633,7 +3633,7 @@
     "id": "practice_0237",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -3648,7 +3648,7 @@
     "id": "practice_0238",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -3663,7 +3663,7 @@
     "id": "practice_0239",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -3678,7 +3678,7 @@
     "id": "practice_0240",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -3693,7 +3693,7 @@
     "id": "practice_0241",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -3708,7 +3708,7 @@
     "id": "practice_0242",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -3723,7 +3723,7 @@
     "id": "practice_0243",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -3738,7 +3738,7 @@
     "id": "practice_0244",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -3753,7 +3753,7 @@
     "id": "practice_0245",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -3768,7 +3768,7 @@
     "id": "practice_0246",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -3783,7 +3783,7 @@
     "id": "practice_0247",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -3798,7 +3798,7 @@
     "id": "practice_0248",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -3813,7 +3813,7 @@
     "id": "practice_0249",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -3828,7 +3828,7 @@
     "id": "practice_0250",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -3843,7 +3843,7 @@
     "id": "practice_0251",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -3858,7 +3858,7 @@
     "id": "practice_0252",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -3873,7 +3873,7 @@
     "id": "practice_0253",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -3888,7 +3888,7 @@
     "id": "practice_0254",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -3903,7 +3903,7 @@
     "id": "practice_0255",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -3918,7 +3918,7 @@
     "id": "practice_0256",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -3933,7 +3933,7 @@
     "id": "practice_0257",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -3948,7 +3948,7 @@
     "id": "practice_0258",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -3963,7 +3963,7 @@
     "id": "practice_0259",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -3978,7 +3978,7 @@
     "id": "practice_0260",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -3993,7 +3993,7 @@
     "id": "practice_0261",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -4008,7 +4008,7 @@
     "id": "practice_0262",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -4023,7 +4023,7 @@
     "id": "practice_0263",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -4038,7 +4038,7 @@
     "id": "practice_0264",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -4053,7 +4053,7 @@
     "id": "practice_0265",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -4068,7 +4068,7 @@
     "id": "practice_0266",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -4083,7 +4083,7 @@
     "id": "practice_0267",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -4098,7 +4098,7 @@
     "id": "practice_0268",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -4113,7 +4113,7 @@
     "id": "practice_0269",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -4128,7 +4128,7 @@
     "id": "practice_0270",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -4143,7 +4143,7 @@
     "id": "practice_0271",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -4158,7 +4158,7 @@
     "id": "practice_0272",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -4173,7 +4173,7 @@
     "id": "practice_0273",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -4188,7 +4188,7 @@
     "id": "practice_0274",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -4203,7 +4203,7 @@
     "id": "practice_0275",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -4218,7 +4218,7 @@
     "id": "practice_0276",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -4233,7 +4233,7 @@
     "id": "practice_0277",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -4248,7 +4248,7 @@
     "id": "practice_0278",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -4263,7 +4263,7 @@
     "id": "practice_0279",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -4278,7 +4278,7 @@
     "id": "practice_0280",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -4293,7 +4293,7 @@
     "id": "practice_0281",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -4308,7 +4308,7 @@
     "id": "practice_0282",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -4323,7 +4323,7 @@
     "id": "practice_0283",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -4338,7 +4338,7 @@
     "id": "practice_0284",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -4353,7 +4353,7 @@
     "id": "practice_0285",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -4368,7 +4368,7 @@
     "id": "practice_0286",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -4383,7 +4383,7 @@
     "id": "practice_0287",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -4398,7 +4398,7 @@
     "id": "practice_0288",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -4413,7 +4413,7 @@
     "id": "practice_0289",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -4428,7 +4428,7 @@
     "id": "practice_0290",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -4443,7 +4443,7 @@
     "id": "practice_0291",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -4458,7 +4458,7 @@
     "id": "practice_0292",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -4473,7 +4473,7 @@
     "id": "practice_0293",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -4488,7 +4488,7 @@
     "id": "practice_0294",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -4503,7 +4503,7 @@
     "id": "practice_0295",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -4518,7 +4518,7 @@
     "id": "practice_0296",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -4533,7 +4533,7 @@
     "id": "practice_0297",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -4548,7 +4548,7 @@
     "id": "practice_0298",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -4563,7 +4563,7 @@
     "id": "practice_0299",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -4578,7 +4578,7 @@
     "id": "practice_0300",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -4593,7 +4593,7 @@
     "id": "practice_0301",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -4608,7 +4608,7 @@
     "id": "practice_0302",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -4623,7 +4623,7 @@
     "id": "practice_0303",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -4638,7 +4638,7 @@
     "id": "practice_0304",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -4653,7 +4653,7 @@
     "id": "practice_0305",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -4668,7 +4668,7 @@
     "id": "practice_0306",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -4683,7 +4683,7 @@
     "id": "practice_0307",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -4698,7 +4698,7 @@
     "id": "practice_0308",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -4713,7 +4713,7 @@
     "id": "practice_0309",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -4728,7 +4728,7 @@
     "id": "practice_0310",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -4743,7 +4743,7 @@
     "id": "practice_0311",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -4758,7 +4758,7 @@
     "id": "practice_0312",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -4773,7 +4773,7 @@
     "id": "practice_0313",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -4788,7 +4788,7 @@
     "id": "practice_0314",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -4803,7 +4803,7 @@
     "id": "practice_0315",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -4818,7 +4818,7 @@
     "id": "practice_0316",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -4833,7 +4833,7 @@
     "id": "practice_0317",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -4848,7 +4848,7 @@
     "id": "practice_0318",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -4863,7 +4863,7 @@
     "id": "practice_0319",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -4878,7 +4878,7 @@
     "id": "practice_0320",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -4893,7 +4893,7 @@
     "id": "practice_0321",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -4908,7 +4908,7 @@
     "id": "practice_0322",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -4923,7 +4923,7 @@
     "id": "practice_0323",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -4938,7 +4938,7 @@
     "id": "practice_0324",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -4953,7 +4953,7 @@
     "id": "practice_0325",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -4968,7 +4968,7 @@
     "id": "practice_0326",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -4983,7 +4983,7 @@
     "id": "practice_0327",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -4998,7 +4998,7 @@
     "id": "practice_0328",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -5013,7 +5013,7 @@
     "id": "practice_0329",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -5028,7 +5028,7 @@
     "id": "practice_0330",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -5043,7 +5043,7 @@
     "id": "practice_0331",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -5058,7 +5058,7 @@
     "id": "practice_0332",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -5073,7 +5073,7 @@
     "id": "practice_0333",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -5088,7 +5088,7 @@
     "id": "practice_0334",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -5103,7 +5103,7 @@
     "id": "practice_0335",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -5118,7 +5118,7 @@
     "id": "practice_0336",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -5133,7 +5133,7 @@
     "id": "practice_0337",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -5148,7 +5148,7 @@
     "id": "practice_0338",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -5163,7 +5163,7 @@
     "id": "practice_0339",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -5178,7 +5178,7 @@
     "id": "practice_0340",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -5193,7 +5193,7 @@
     "id": "practice_0341",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -5208,7 +5208,7 @@
     "id": "practice_0342",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -5223,7 +5223,7 @@
     "id": "practice_0343",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -5238,7 +5238,7 @@
     "id": "practice_0344",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -5253,7 +5253,7 @@
     "id": "practice_0345",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -5268,7 +5268,7 @@
     "id": "practice_0346",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -5283,7 +5283,7 @@
     "id": "practice_0347",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -5298,7 +5298,7 @@
     "id": "practice_0348",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -5313,7 +5313,7 @@
     "id": "practice_0349",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -5328,7 +5328,7 @@
     "id": "practice_0350",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -5343,7 +5343,7 @@
     "id": "practice_0351",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -5358,7 +5358,7 @@
     "id": "practice_0352",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -5373,7 +5373,7 @@
     "id": "practice_0353",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -5388,7 +5388,7 @@
     "id": "practice_0354",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -5403,7 +5403,7 @@
     "id": "practice_0355",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -5418,7 +5418,7 @@
     "id": "practice_0356",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -5433,7 +5433,7 @@
     "id": "practice_0357",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -5448,7 +5448,7 @@
     "id": "practice_0358",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -5463,7 +5463,7 @@
     "id": "practice_0359",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -5478,7 +5478,7 @@
     "id": "practice_0360",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -5493,7 +5493,7 @@
     "id": "practice_0361",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -5508,7 +5508,7 @@
     "id": "practice_0362",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -5523,7 +5523,7 @@
     "id": "practice_0363",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -5538,7 +5538,7 @@
     "id": "practice_0364",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -5553,7 +5553,7 @@
     "id": "practice_0365",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -5568,7 +5568,7 @@
     "id": "practice_0366",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -5583,7 +5583,7 @@
     "id": "practice_0367",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -5598,7 +5598,7 @@
     "id": "practice_0368",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -5613,7 +5613,7 @@
     "id": "practice_0369",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -5628,7 +5628,7 @@
     "id": "practice_0370",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -5643,7 +5643,7 @@
     "id": "practice_0371",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -5658,7 +5658,7 @@
     "id": "practice_0372",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -5673,7 +5673,7 @@
     "id": "practice_0373",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -5688,7 +5688,7 @@
     "id": "practice_0374",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -5703,7 +5703,7 @@
     "id": "practice_0375",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -5718,7 +5718,7 @@
     "id": "practice_0376",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -5733,7 +5733,7 @@
     "id": "practice_0377",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -5748,7 +5748,7 @@
     "id": "practice_0378",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -5763,7 +5763,7 @@
     "id": "practice_0379",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -5778,7 +5778,7 @@
     "id": "practice_0380",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -5793,7 +5793,7 @@
     "id": "practice_0381",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -5808,7 +5808,7 @@
     "id": "practice_0382",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -5823,7 +5823,7 @@
     "id": "practice_0383",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -5838,7 +5838,7 @@
     "id": "practice_0384",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -5853,7 +5853,7 @@
     "id": "practice_0385",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -5868,7 +5868,7 @@
     "id": "practice_0386",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -5883,7 +5883,7 @@
     "id": "practice_0387",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -5898,7 +5898,7 @@
     "id": "practice_0388",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -5913,7 +5913,7 @@
     "id": "practice_0389",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -5928,7 +5928,7 @@
     "id": "practice_0390",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -5943,7 +5943,7 @@
     "id": "practice_0391",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -5958,7 +5958,7 @@
     "id": "practice_0392",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -5973,7 +5973,7 @@
     "id": "practice_0393",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -5988,7 +5988,7 @@
     "id": "practice_0394",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -6003,7 +6003,7 @@
     "id": "practice_0395",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -6018,7 +6018,7 @@
     "id": "practice_0396",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -6033,7 +6033,7 @@
     "id": "practice_0397",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -6048,7 +6048,7 @@
     "id": "practice_0398",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -6063,7 +6063,7 @@
     "id": "practice_0399",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -6078,7 +6078,7 @@
     "id": "practice_0400",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -6093,7 +6093,7 @@
     "id": "practice_0401",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -6108,7 +6108,7 @@
     "id": "practice_0402",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -6123,7 +6123,7 @@
     "id": "practice_0403",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -6138,7 +6138,7 @@
     "id": "practice_0404",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -6153,7 +6153,7 @@
     "id": "practice_0405",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -6168,7 +6168,7 @@
     "id": "practice_0406",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -6183,7 +6183,7 @@
     "id": "practice_0407",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -6198,7 +6198,7 @@
     "id": "practice_0408",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -6213,7 +6213,7 @@
     "id": "practice_0409",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -6228,7 +6228,7 @@
     "id": "practice_0410",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -6243,7 +6243,7 @@
     "id": "practice_0411",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -6258,7 +6258,7 @@
     "id": "practice_0412",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -6273,7 +6273,7 @@
     "id": "practice_0413",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -6288,7 +6288,7 @@
     "id": "practice_0414",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -6303,7 +6303,7 @@
     "id": "practice_0415",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -6318,7 +6318,7 @@
     "id": "practice_0416",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -6333,7 +6333,7 @@
     "id": "practice_0417",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -6348,7 +6348,7 @@
     "id": "practice_0418",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -6363,7 +6363,7 @@
     "id": "practice_0419",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -6378,7 +6378,7 @@
     "id": "practice_0420",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -6393,7 +6393,7 @@
     "id": "practice_0421",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -6408,7 +6408,7 @@
     "id": "practice_0422",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -6423,7 +6423,7 @@
     "id": "practice_0423",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -6438,7 +6438,7 @@
     "id": "practice_0424",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -6453,7 +6453,7 @@
     "id": "practice_0425",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -6468,7 +6468,7 @@
     "id": "practice_0426",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -6483,7 +6483,7 @@
     "id": "practice_0427",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -6498,7 +6498,7 @@
     "id": "practice_0428",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -6513,7 +6513,7 @@
     "id": "practice_0429",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -6528,7 +6528,7 @@
     "id": "practice_0430",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -6543,7 +6543,7 @@
     "id": "practice_0431",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -6558,7 +6558,7 @@
     "id": "practice_0432",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -6573,7 +6573,7 @@
     "id": "practice_0433",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -6588,7 +6588,7 @@
     "id": "practice_0434",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -6603,7 +6603,7 @@
     "id": "practice_0435",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -6618,7 +6618,7 @@
     "id": "practice_0436",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -6633,7 +6633,7 @@
     "id": "practice_0437",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -6648,7 +6648,7 @@
     "id": "practice_0438",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -6663,7 +6663,7 @@
     "id": "practice_0439",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -6678,7 +6678,7 @@
     "id": "practice_0440",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -6693,7 +6693,7 @@
     "id": "practice_0441",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -6708,7 +6708,7 @@
     "id": "practice_0442",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -6723,7 +6723,7 @@
     "id": "practice_0443",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -6738,7 +6738,7 @@
     "id": "practice_0444",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -6753,7 +6753,7 @@
     "id": "practice_0445",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -6768,7 +6768,7 @@
     "id": "practice_0446",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -6783,7 +6783,7 @@
     "id": "practice_0447",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -6798,7 +6798,7 @@
     "id": "practice_0448",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -6813,7 +6813,7 @@
     "id": "practice_0449",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -6828,7 +6828,7 @@
     "id": "practice_0450",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -6843,7 +6843,7 @@
     "id": "practice_0451",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -6858,7 +6858,7 @@
     "id": "practice_0452",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -6873,7 +6873,7 @@
     "id": "practice_0453",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -6888,7 +6888,7 @@
     "id": "practice_0454",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -6903,7 +6903,7 @@
     "id": "practice_0455",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -6918,7 +6918,7 @@
     "id": "practice_0456",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -6933,7 +6933,7 @@
     "id": "practice_0457",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -6948,7 +6948,7 @@
     "id": "practice_0458",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -6963,7 +6963,7 @@
     "id": "practice_0459",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -6978,7 +6978,7 @@
     "id": "practice_0460",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -6993,7 +6993,7 @@
     "id": "practice_0461",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -7008,7 +7008,7 @@
     "id": "practice_0462",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -7023,7 +7023,7 @@
     "id": "practice_0463",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -7038,7 +7038,7 @@
     "id": "practice_0464",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -7053,7 +7053,7 @@
     "id": "practice_0465",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -7068,7 +7068,7 @@
     "id": "practice_0466",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -7083,7 +7083,7 @@
     "id": "practice_0467",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -7098,7 +7098,7 @@
     "id": "practice_0468",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -7113,7 +7113,7 @@
     "id": "practice_0469",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -7128,7 +7128,7 @@
     "id": "practice_0470",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -7143,7 +7143,7 @@
     "id": "practice_0471",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -7158,7 +7158,7 @@
     "id": "practice_0472",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -7173,7 +7173,7 @@
     "id": "practice_0473",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -7188,7 +7188,7 @@
     "id": "practice_0474",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -7203,7 +7203,7 @@
     "id": "practice_0475",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -7218,7 +7218,7 @@
     "id": "practice_0476",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -7233,7 +7233,7 @@
     "id": "practice_0477",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -7248,7 +7248,7 @@
     "id": "practice_0478",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -7263,7 +7263,7 @@
     "id": "practice_0479",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -7278,7 +7278,7 @@
     "id": "practice_0480",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
@@ -7293,7 +7293,7 @@
     "id": "practice_0481",
     "year": "Practice",
     "subject": "biology",
-    "question": "The site of protein synthesis in a cell is the",
+    "question": "Cell-এ protein synthesis কোথায় হয়?",
     "options": {
       "A": "centriole",
       "B": "vacuole",
@@ -7308,7 +7308,7 @@
     "id": "practice_0482",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Oxidation is best described as",
+    "question": "Oxidation-কে সবচেয়ে ভালোভাবে কোনটি দিয়ে বর্ণনা করা যায়?",
     "options": {
       "A": "gain of neutrons",
       "B": "loss of protons",
@@ -7323,7 +7323,7 @@
     "id": "practice_0483",
     "year": "Practice",
     "subject": "physics",
-    "question": "Electrical resistance is measured in",
+    "question": "Electrical resistance কোন unit-এ মাপা হয়?",
     "options": {
       "A": "ampere",
       "B": "coulomb",
@@ -7338,7 +7338,7 @@
     "id": "practice_0484",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct sentence.",
+    "question": "সঠিক sentence-টি নির্বাচন করো।",
     "options": {
       "A": "He going to school every day.",
       "B": "He gone to school every day.",
@@ -7353,7 +7353,7 @@
     "id": "practice_0485",
     "year": "Practice",
     "subject": "gk",
-    "question": "The currency of Bangladesh is",
+    "question": "বাংলাদেশের currency কোনটি?",
     "options": {
       "A": "dollar",
       "B": "ringgit",
@@ -7368,7 +7368,7 @@
     "id": "practice_0486",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which blood cells are primarily responsible for antibody production?",
+    "question": "কোন blood cells মূলত antibody production-এর জন্য দায়ী?",
     "options": {
       "A": "neutrophils",
       "B": "B lymphocytes",
@@ -7383,7 +7383,7 @@
     "id": "practice_0487",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "Which gas is released when a carbonate reacts with dilute acid?",
+    "question": "Carbonate dilute acid-এর সঙ্গে reaction করলে কোন gas নির্গত হয়?",
     "options": {
       "A": "hydrogen",
       "B": "carbon dioxide",
@@ -7398,7 +7398,7 @@
     "id": "practice_0488",
     "year": "Practice",
     "subject": "physics",
-    "question": "The speed of light in vacuum is approximately",
+    "question": "শূন্যস্থানে আলোর বেগ প্রায় কত?",
     "options": {
       "A": "3 × 10^10 m/s",
       "B": "3 × 10^8 m/s",
@@ -7413,7 +7413,7 @@
     "id": "practice_0489",
     "year": "Practice",
     "subject": "english",
-    "question": "The plural of 'diagnosis' is",
+    "question": "'diagnosis'-এর plural কী?",
     "options": {
       "A": "diagnosi",
       "B": "diagnoses",
@@ -7428,7 +7428,7 @@
     "id": "practice_0490",
     "year": "Practice",
     "subject": "gk",
-    "question": "The longest sea beach in Bangladesh is commonly known as",
+    "question": "বাংলাদেশের দীর্ঘতম সমুদ্রসৈকত হিসেবে কোনটি পরিচিত?",
     "options": {
       "A": "Inani",
       "B": "Cox's Bazar",
@@ -7443,7 +7443,7 @@
     "id": "practice_0491",
     "year": "Practice",
     "subject": "biology",
-    "question": "The hormone that lowers blood glucose concentration is",
+    "question": "রক্তে glucose-এর ঘনত্ব কমায় কোন hormone?",
     "options": {
       "A": "insulin",
       "B": "glucagon",
@@ -7458,7 +7458,7 @@
     "id": "practice_0492",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The strongest intermolecular attraction among the following is generally",
+    "question": "নিচের কোনটি সাধারণত সবচেয়ে শক্তিশালী intermolecular attraction?",
     "options": {
       "A": "hydrogen bonding",
       "B": "London dispersion only",
@@ -7473,7 +7473,7 @@
     "id": "practice_0493",
     "year": "Practice",
     "subject": "physics",
-    "question": "Kinetic energy depends on",
+    "question": "Kinetic energy কোন কোন বিষয়ের ওপর নির্ভর করে?",
     "options": {
       "A": "mass and square of velocity",
       "B": "mass only",
@@ -7488,7 +7488,7 @@
     "id": "practice_0494",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correctly spelled word.",
+    "question": "সঠিকভাবে বানান করা শব্দটি নির্বাচন করো।",
     "options": {
       "A": "separate",
       "B": "seperate",
@@ -7503,7 +7503,7 @@
     "id": "practice_0495",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national language of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ভাষা কোনটি?",
     "options": {
       "A": "Bangla",
       "B": "English",
@@ -7518,7 +7518,7 @@
     "id": "practice_0496",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which organelle is chiefly responsible for aerobic ATP production?",
+    "question": "কোন organelle মূলত aerobic ATP production-এর জন্য দায়ী?",
     "options": {
       "A": "Golgi apparatus",
       "B": "lysosome",
@@ -7533,7 +7533,7 @@
     "id": "practice_0497",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The atomic number of an element equals the number of",
+    "question": "কোনো element-এর atomic number সমান কতটির সংখ্যার?",
     "options": {
       "A": "neutrons",
       "B": "nucleons",
@@ -7548,7 +7548,7 @@
     "id": "practice_0498",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of power is",
+    "question": "Power-এর SI unit কোনটি?",
     "options": {
       "A": "joule",
       "B": "newton",
@@ -7563,7 +7563,7 @@
     "id": "practice_0499",
     "year": "Practice",
     "subject": "english",
-    "question": "In the sentence 'She spoke softly', 'softly' is a",
+    "question": "'She spoke softly' বাক্যে 'softly' কোন parts of speech?",
     "options": {
       "A": "noun",
       "B": "adjective",
@@ -7578,7 +7578,7 @@
     "id": "practice_0500",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Liberation War of Bangladesh took place in",
+    "question": "বাংলাদেশের Liberation War সংঘটিত হয় কোন সালে?",
     "options": {
       "A": "1947",
       "B": "1952",
@@ -7593,7 +7593,7 @@
     "id": "practice_0501",
     "year": "Practice",
     "subject": "biology",
-    "question": "The valve between the left atrium and left ventricle is the",
+    "question": "Left atrium ও left ventricle-এর মধ্যবর্তী valve কোনটি?",
     "options": {
       "A": "pulmonary valve",
       "B": "aortic valve",
@@ -7608,7 +7608,7 @@
     "id": "practice_0502",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "A catalyst primarily changes the",
+    "question": "Catalyst মূলত কোন বিষয়টি পরিবর্তন করে?",
     "options": {
       "A": "products at equilibrium",
       "B": "atomic mass",
@@ -7623,7 +7623,7 @@
     "id": "practice_0503",
     "year": "Practice",
     "subject": "physics",
-    "question": "A convex lens is generally",
+    "question": "Convex lens সাধারণত কেমন?",
     "options": {
       "A": "opaque",
       "B": "non-refracting",
@@ -7638,7 +7638,7 @@
     "id": "practice_0504",
     "year": "Practice",
     "subject": "english",
-    "question": "The opposite of 'expand' is",
+    "question": "'expand'-এর বিপরীত শব্দ কোনটি?",
     "options": {
       "A": "increase",
       "B": "enlarge",
@@ -7653,7 +7653,7 @@
     "id": "practice_0505",
     "year": "Practice",
     "subject": "gk",
-    "question": "The Sundarbans is famous as a",
+    "question": "Sundarbans কোন ধরনের বন হিসেবে বিখ্যাত?",
     "options": {
       "A": "coral reef",
       "B": "tundra",
@@ -7668,7 +7668,7 @@
     "id": "practice_0506",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which vitamin is essential for normal blood clotting?",
+    "question": "স্বাভাবিক blood clotting-এর জন্য কোন vitamin অপরিহার্য?",
     "options": {
       "A": "vitamin D",
       "B": "vitamin K",
@@ -7683,7 +7683,7 @@
     "id": "practice_0507",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The functional group of an alcohol is",
+    "question": "Alcohol-এর functional group কোনটি?",
     "options": {
       "A": "-NH2",
       "B": "-OH",
@@ -7698,7 +7698,7 @@
     "id": "practice_0508",
     "year": "Practice",
     "subject": "physics",
-    "question": "The charge of an electron is",
+    "question": "Electron-এর charge কেমন?",
     "options": {
       "A": "variable only in vacuum",
       "B": "negative",
@@ -7713,7 +7713,7 @@
     "id": "practice_0509",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct article: 'He is ___ honest man.'",
+    "question": "সঠিক article নির্বাচন করো: 'He is ___ honest man.'",
     "options": {
       "A": "no article",
       "B": "an",
@@ -7728,7 +7728,7 @@
     "id": "practice_0510",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national animal of Bangladesh is the",
+    "question": "বাংলাদেশের জাতীয় প্রাণী কোনটি?",
     "options": {
       "A": "lion",
       "B": "Royal Bengal Tiger",
@@ -7743,7 +7743,7 @@
     "id": "practice_0511",
     "year": "Practice",
     "subject": "biology",
-    "question": "The basic structural and functional unit of the human kidney is the",
+    "question": "মানুষের kidney-এর basic structural ও functional unit কোনটি?",
     "options": {
       "A": "nephron",
       "B": "neuron",
@@ -7758,7 +7758,7 @@
     "id": "practice_0512",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The pH of a neutral aqueous solution at 25°C is approximately",
+    "question": "25°C তাপমাত্রায় neutral aqueous solution-এর pH প্রায় কত?",
     "options": {
       "A": "7",
       "B": "0",
@@ -7773,7 +7773,7 @@
     "id": "practice_0513",
     "year": "Practice",
     "subject": "physics",
-    "question": "The SI unit of force is",
+    "question": "Force-এর SI unit কোনটি?",
     "options": {
       "A": "newton",
       "B": "joule",
@@ -7788,7 +7788,7 @@
     "id": "practice_0514",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct synonym of 'rapid'.",
+    "question": "'rapid'-এর সঠিক synonym নির্বাচন করো।",
     "options": {
       "A": "swift",
       "B": "ancient",
@@ -7803,7 +7803,7 @@
     "id": "practice_0515",
     "year": "Practice",
     "subject": "gk",
-    "question": "The capital of Bangladesh is",
+    "question": "বাংলাদেশের রাজধানী কোনটি?",
     "options": {
       "A": "Dhaka",
       "B": "Chattogram",
@@ -7818,7 +7818,7 @@
     "id": "practice_0516",
     "year": "Practice",
     "subject": "biology",
-    "question": "Which molecule carries genetic information in most living organisms?",
+    "question": "বেশিরভাগ জীবের genetic information কোন molecule বহন করে?",
     "options": {
       "A": "ATP",
       "B": "glucose",
@@ -7833,7 +7833,7 @@
     "id": "practice_0517",
     "year": "Practice",
     "subject": "chemistry",
-    "question": "The molecular formula of methane is",
+    "question": "Methane-এর molecular formula কোনটি?",
     "options": {
       "A": "C2H6",
       "B": "CO2",
@@ -7848,7 +7848,7 @@
     "id": "practice_0518",
     "year": "Practice",
     "subject": "physics",
-    "question": "The acceleration due to gravity near Earth's surface is approximately",
+    "question": "পৃথিবীর পৃষ্ঠের কাছে acceleration due to gravity-এর মান প্রায় কত?",
     "options": {
       "A": "98 m/s²",
       "B": "0.98 m/s²",
@@ -7863,7 +7863,7 @@
     "id": "practice_0519",
     "year": "Practice",
     "subject": "english",
-    "question": "Choose the correct antonym of 'scarce'.",
+    "question": "'scarce'-এর সঠিক antonym নির্বাচন করো।",
     "options": {
       "A": "rare",
       "B": "limited",
@@ -7878,7 +7878,7 @@
     "id": "practice_0520",
     "year": "Practice",
     "subject": "gk",
-    "question": "The national flower of Bangladesh is",
+    "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
     "options": {
       "A": "rose",
       "B": "lotus",
