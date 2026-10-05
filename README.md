@@ -28,3 +28,23 @@ Maintain your student profile, manage your academic information, access your lea
 ### **Learn → Practice → Challenge → Analyze → Improve**
 
 **Medical Admission Pro** — built to turn consistent preparation into measurable progress and help students move closer to their medical admission goals.
+
+
+
+
+
+## 👨‍💻 Developer   https://rakibhasandc27.blogspot.com/
+
+**Designed & Developed by the Medical Admission Pro Development Team**
+
+Building a modern, reliable, and student-focused digital platform for medical admission preparation—with an emphasis on performance, usability, security, and continuous improvement.
+
+**Technology:** HTML • CSS • JavaScript • Firebase
+**Platform:** GitHub Pages • Firebase
+
+### 🌐 Visit Medical Admission Pro
+
+**[Visit Website →](https://serakib.github.io/Medical-Admission-Tracker/)**
+
+*Learn smarter. Practise better. Compete globally.*
+
