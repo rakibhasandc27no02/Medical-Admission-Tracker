@@ -1,0 +1,1214 @@
+/* Medical Admission Tester - application engine
+ * Questions are loaded from ./questions.json at runtime.
+ * Firebase configuration/auth remains external and is never hard-coded here.
+ */
+
+let QUESTION_BANK = [];
+
+class MedicalExamApp {
+            constructor() {
+                this.views = ['home', 'question-bank', 'practice', 'exam-intro', 'previous', 'setup', 'exam', 'result', 'review', 'progress', 'leaderboard', 'syllabus'];
+                this.currentTheme = localStorage.getItem('med_theme') || 'light';
+                this.language = localStorage.getItem('med_language') || 'bn';
+                this.previousSelectedYear = null;
+                this.previousShowAnswers = false;
+                this.preparedExam = null;
+                this.bankMode = 'view';
+                this.bankSubject = 'all';
+                this.bankYear = 'all';
+                this.bankSearch = '';
+                this.practiceIndex = 0;
+                this.practiceSession = null;
+                this.leaderboardCacheKey = 'med_leaderboard_cache_v4';
+                this.firestore = null;
+                this.profile = null;
+                
+                // Exam Setup Options
+                this.setup = {
+                    mode: 'model', // 'random', 'model', 'previous'
+                    subject: 'all',
+                    questionsCount: 30,
+                    durationMins: 30
+                };
+
+                // Active Exam State
+                this.examState = {
+                    questions: [],
+                    userAnswers: [], // Array of selected option indices (or null)
+                    markedForReview: [], // Array of booleans
+                    currentIndex: 0,
+                    timerSeconds: 0,
+                    timerInterval: null,
+                    timeUsedSeconds: 0,
+                    submitted: false
+                };
+
+                this.questionBank = [];
+                this.questionsLoaded = false;
+                this.authUser = null;
+                this.auth = null;
+                this.authMode = 'login';
+                this.authReady = false;
+                this.examActive = false;
+                this.beforeUnloadHandler = (event) => { if (this.examActive && !this.examState.submitted) { event.preventDefault(); event.returnValue = ''; } };
+                window.addEventListener('beforeunload', this.beforeUnloadHandler);
+                window.addEventListener('popstate', () => { if (this.examActive && !this.examState.submitted) { history.pushState({ exam: true }, '', window.location.href); this.confirmSubmitExam('navigation'); } });
+
+                this.init();
+            }
+
+            async init() {
+                // Apply theme and show the existing home UI immediately.
+                this.applyTheme();
+                this.applyLanguage();
+                history.replaceState({ app: true }, '', window.location.href);
+                this.showView('home');
+                this.setDataStatus('loading');
+
+                // Firebase/auth should never prevent Guest mode.
+                this.initAuth();
+
+                try {
+                    await this.loadQuestionBank();
+                    this.updateSubjectCountsUI();
+                    this.updateSetupUI();
+                    this.loadProgressStats();
+                    this.setDataStatus('ready');
+                } catch (error) {
+                    console.error('Question bank initialization failed:', error);
+                    this.updateSubjectCountsUI();
+                    this.updateSetupUI();
+                    this.loadProgressStats();
+                    this.setDataStatus('error', error.message || 'questions.json লোড করা যায়নি।');
+                }
+            }
+
+
+            setDataStatus(state, message = '') {
+                const el = document.getElementById('question-data-status');
+                if (!el) return;
+                el.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-xs';
+                if (state === 'ready') {
+                    el.classList.add('hidden');
+                    return;
+                }
+                el.classList.remove('hidden');
+                if (state === 'loading') {
+                    el.classList.add('text-blue-700', 'dark:text-blue-300', 'bg-blue-50', 'dark:bg-blue-950/30');
+                    el.innerHTML = '<i class="fa-solid fa-spinner fa-spin ml-1"></i> প্রশ্ন ব্যাংক লোড হচ্ছে...';
+                } else {
+                    el.classList.add('text-red-700', 'dark:text-red-300', 'bg-red-50', 'dark:bg-red-950/30');
+                    el.innerHTML = `<i class="fa-solid fa-triangle-exclamation ml-1"></i> ${this.escapeHtml(message || 'প্রশ্ন ব্যাংক লোড করা যায়নি।')}`;
+                }
+            }
+
+            showDataError(message) {
+                this.setDataStatus('error', message);
+            }
+
+            async loadQuestionBank() {
+                const cacheBuster = `?v=${Date.now()}`;
+                const response = await fetch(`./questions.json${cacheBuster}`, {
+                    cache: 'no-store',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) {
+                    throw new Error(`questions.json (${response.status})`);
+                }
+                const raw = await response.json();
+                if (!Array.isArray(raw)) {
+                    throw new Error('questions.json-এ একটি JSON array থাকতে হবে।');
+                }
+
+                const normalized = raw.map((q, index) => this.normalizeQuestion(q, index))
+                    .filter(Boolean);
+
+                if (!normalized.length) {
+                    throw new Error('questions.json-এ কোনো বৈধ প্রশ্ন পাওয়া যায়নি।');
+                }
+
+                this.questionBank = normalized;
+                this.questionsLoaded = true;
+                this.populateYearFilter();
+            }
+
+            normalizeLocalizedOptions(value) {
+                if (Array.isArray(value)) return value.map(v => String(v ?? '').trim());
+                if (value && typeof value === 'object') return ['A','B','C','D'].map(k => String(value[k] ?? '').trim());
+                return null;
+            }
+
+            detectTextLanguage(text) {
+                const value = String(text || '');
+                const bn = (value.match(/[\u0980-\u09FF]/g) || []).length;
+                const en = (value.match(/[A-Za-z]/g) || []).length;
+                return bn > en ? 'bn' : 'en';
+            }
+
+            normalizeQuestion(q, index) {
+                if (!q || typeof q !== 'object') return null;
+
+                const rawOptions = Array.isArray(q.options)
+                    ? q.options
+                    : ['A', 'B', 'C', 'D'].map(k => q.options && q.options[k]);
+
+                const options = rawOptions.map(v => String(v ?? '').trim());
+                if (options.length !== 4 || options.some(v => !v)) {
+                    console.warn(`Skipping invalid question at index ${index}: options missing`);
+                    return null;
+                }
+
+                const rawAnswer = q.correctAnswer ?? q.answer;
+                let answer = -1;
+
+                if (Number.isInteger(rawAnswer)) {
+                    answer = rawAnswer;
+                } else {
+                    const value = String(rawAnswer ?? '').trim();
+                    if (/^[ABCD]$/i.test(value)) {
+                        answer = 'ABCD'.indexOf(value.toUpperCase());
+                    } else if (/^[0-3]$/.test(value)) {
+                        answer = Number(value);
+                    } else {
+                        const found = options.findIndex(opt => opt === value);
+                        if (found >= 0) answer = found;
+                    }
+                }
+
+                if (answer < 0 || answer > 3) {
+                    console.warn(`Skipping invalid question at index ${index}: correct answer missing`);
+                    return null;
+                }
+
+                const questionText = String(q.question ?? q.questionText ?? '').trim();
+                if (!questionText) {
+                    console.warn(`Skipping invalid question at index ${index}: question text missing`);
+                    return null;
+                }
+
+                const source = String(q.source || 'Model Test').trim();
+                const year = q.year === null || q.year === undefined || q.year === ''
+                    ? null
+                    : String(q.year).trim();
+
+                const rawSubject = String(q.subject || 'general').trim().toLowerCase();
+                const subjectAliases = {
+                    'biology - zoology': 'biology',
+                    'biology - botany': 'biology',
+                    'chemistry 1st paper': 'chemistry',
+                    'chemistry 2nd paper': 'chemistry',
+                    'physics 1st paper': 'physics',
+                    'physics 2nd paper': 'physics',
+                    'general knowledge': 'gk',
+                    'general knowledge / current affairs': 'gk'
+                };
+                const subject = subjectAliases[rawSubject] || rawSubject;
+
+                return {
+                    id: String(q.id || q.questionId || `question_${index + 1}`),
+                    subject,
+                    difficulty: String(q.difficulty || 'medium').toLowerCase().trim(),
+                    source,
+                    year,
+                    question: questionText,
+                    question_bn: String(q.question_bn || '').trim() || null,
+                    question_en: String(q.question_en || '').trim() || null,
+                    options,
+                    options_bn: this.normalizeLocalizedOptions(q.options_bn),
+                    options_en: this.normalizeLocalizedOptions(q.options_en),
+                    answer,
+                    correctAnswer: 'ABCD'[answer],
+                    explanation: String(q.explanation || '').trim(),
+                    explanation_bn: String(q.explanation_bn || '').trim() || null,
+                    explanation_en: String(q.explanation_en || '').trim() || null,
+                    isPreviousYear: Boolean(year) && !/^practice$/i.test(year) || /previous\s*year|বিগত|past\s*year|verified previous/i.test(source)
+                };
+            }
+
+            populateQuestionBankYearFilter(){
+                const select=document.getElementById('question-bank-year'); if(!select)return;
+                const years=[...new Set(this.questionBank.map(q=>q.year).filter(y=>y && !/^practice$/i.test(y)))].sort((a,b)=>b.localeCompare(a,undefined,{numeric:true}));
+                select.innerHTML=`<option value="all">${this.t('All Years','সব বছর')}</option>`+years.map(y=>`<option value="${this.escapeHtml(y)}">${this.escapeHtml(y)}</option>`).join('');
+            }
+
+            populateYearFilter() {
+                const select = document.getElementById('setup-year');
+                if (!select) return;
+                const years = [...new Set(this.questionBank.map(q => q.year).filter(y => y && !/^practice$/i.test(y)))]
+                    .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+                const previous = select.value;
+                select.innerHTML = '<option value="all">সব বছর (All Years)</option>';
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    select.appendChild(option);
+                });
+                select.value = years.includes(previous) ? previous : 'all';
+            }
+
+            getHistoryKey() {
+                return this.authUser?.uid ? `med_history_${this.authUser.uid}` : 'med_history';
+            }
+
+            escapeHtml(value) {
+                return String(value ?? '').replace(/[&<>"']/g, ch => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+                }[ch]));
+            }
+
+            initAuth() {
+                try {
+                    if (typeof firebase === 'undefined' || !firebase.auth) {
+                        this.setAuthState(null, 'Firebase Authentication is not available; Guest mode remains available.');
+                        return;
+                    }
+
+                    if (!firebase.apps?.length) {
+                        const config = window.FIREBASE_CONFIG || window.firebaseConfig || window.__FIREBASE_CONFIG__;
+                        if (config && typeof firebase.initializeApp === 'function') {
+                            firebase.initializeApp(config);
+                        }
+                    }
+
+                    if (!firebase.apps?.length) {
+                        this.setAuthState(null, 'Firebase configuration is unavailable; Guest mode remains available.');
+                        return;
+                    }
+
+                    this.auth = firebase.auth();
+                    this.firestore = firebase.firestore ? firebase.firestore() : null;
+                    this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
+                        console.warn('Firebase persistence could not be set:', err);
+                    });
+
+                    this.auth.onAuthStateChanged(user => { this.setAuthState(user); if (user) this.loadUserProfile(); });
+                    this.authReady = true;
+                } catch (error) {
+                    console.error('Firebase initialization error:', error);
+                    this.setAuthState(null, 'Firebase authentication failed. You can continue as Guest.');
+                }
+            }
+
+            setAuthState(user, notice = '') {
+                this.authUser = user || null;
+                if (!user) this.profile = null;
+                const button = document.getElementById('authStatusBtn');
+                const icon = document.getElementById('authStatusIcon');
+                const label = document.getElementById('authStatusLabel');
+
+                if (button && label) {
+                    if (user) {
+                        label.textContent = user.displayName || user.email || 'Account';
+                        button.title = user.email || 'Logged in';
+                        if (icon) icon.className = 'fa-solid fa-user-check ml-1';
+                    } else {
+                        label.textContent = 'লগইন';
+                        button.title = 'লগইন / রেজিস্টার';
+                        if (icon) icon.className = 'fa-solid fa-user ml-1';
+                    }
+                }
+
+                const authNotice = document.getElementById('authNotice');
+                if (authNotice) {
+                    if (notice) {
+                        authNotice.textContent = notice;
+                        authNotice.classList.remove('hidden');
+                    } else {
+                        authNotice.classList.add('hidden');
+                    }
+                }
+
+                const accountEmail = document.getElementById('auth-account-email');
+                if (accountEmail) accountEmail.textContent = user?.email || user?.displayName || 'Guest';
+
+                this.updateSidebarUser();
+                this.loadProgressStats();
+            }
+
+            openAuthModal(mode = this.authUser ? 'account' : 'login') {
+                const modal = document.getElementById('authModal');
+                if (!modal) return;
+                modal.classList.remove('hidden');
+                const msg = document.getElementById('authMessage');
+                if (msg) msg.textContent = '';
+                this.setAuthMode(mode);
+            }
+
+            closeAuthModal() {
+                document.getElementById('authModal')?.classList.add('hidden');
+            }
+
+            setAuthMode(mode) {
+                this.authMode = mode;
+                const loginTab = document.getElementById('auth-tab-login');
+                const registerTab = document.getElementById('auth-tab-register');
+                const nameWrap = document.getElementById('auth-name-wrap');
+                const registerFields = document.getElementById('auth-register-fields');
+                const submit = document.getElementById('auth-submit');
+                const title = document.getElementById('auth-modal-title');
+                const form = document.getElementById('auth-form');
+
+                if (mode === 'account') {
+                    document.getElementById('auth-form')?.classList.add('hidden');
+                    document.getElementById('auth-account')?.classList.remove('hidden');
+                    document.getElementById('auth-email')?.setAttribute('disabled', 'disabled');
+                    return;
+                }
+
+                document.getElementById('auth-account')?.classList.add('hidden');
+                form?.classList.remove('hidden');
+                document.getElementById('auth-email')?.removeAttribute('disabled');
+
+                const isRegister = mode === 'register';
+                if (loginTab) loginTab.className = isRegister
+                    ? 'flex-1 py-2 text-sm font-semibold text-gray-500 hover:text-medical-600'
+                    : 'flex-1 py-2 text-sm font-semibold text-medical-700 border-b-2 border-medical-600';
+                if (registerTab) registerTab.className = isRegister
+                    ? 'flex-1 py-2 text-sm font-semibold text-medical-700 border-b-2 border-medical-600'
+                    : 'flex-1 py-2 text-sm font-semibold text-gray-500 hover:text-medical-600';
+                if (registerFields) registerFields.classList.toggle('hidden', !isRegister);
+                if (submit) submit.textContent = isRegister ? 'রেজিস্টার করুন' : 'লগইন করুন';
+                if (title) title.textContent = isRegister ? 'নতুন অ্যাকাউন্ট তৈরি করুন' : 'অ্যাকাউন্টে লগইন করুন';
+            }
+
+            async handleAuthSubmit(event) {
+                event.preventDefault();
+                const message=document.getElementById('authMessage');
+                const email=document.getElementById('auth-email')?.value.trim();
+                const password=document.getElementById('auth-password')?.value;
+                const name=document.getElementById('auth-name')?.value.trim();
+                const college=document.getElementById('auth-college')?.value.trim();
+                const mobile=document.getElementById('auth-mobile')?.value.trim();
+                const studentClass=document.getElementById('auth-class')?.value.trim();
+                const bloodGroup=document.getElementById('auth-blood')?.value;
+                if(!this.auth){if(message)message.textContent='Firebase Authentication is unavailable. Guest mode is still available.';return;}
+                if(!email||!password||password.length<6){if(message)message.textContent='সঠিক ইমেইল এবং অন্তত ৬ অক্ষরের পাসওয়ার্ড দিন।';return;}
+                const submit=document.getElementById('auth-submit'); if(submit){submit.disabled=true;submit.textContent=this.t('Please wait…','অপেক্ষা করুন…');}
+                try{
+                    let result;
+                    if(this.authMode==='register'){
+                        if(!name||!college||!mobile||!studentClass||!bloodGroup){throw new Error('Please complete all registration fields.');}
+                        result=await this.auth.createUserWithEmailAndPassword(email,password);
+                        if(result.user?.updateProfile) await result.user.updateProfile({displayName:name});
+                        this.authUser=result.user;
+                        this.profile={uid:result.user.uid,name,college,mobile,email,class:studentClass,bloodGroup};
+                        if(this.firestore){
+                            await this.firestore.collection('students').doc(result.user.uid).set({uid:result.user.uid,name,college,mobile,email,class:studentClass,bloodGroup,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),createdAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+                        } else { throw new Error('Account created, but Firestore is not configured. Enable Firestore to save the student profile.'); }
+                    }else{
+                        result=await this.auth.signInWithEmailAndPassword(email,password);
+                        this.authUser=result.user;
+                        await this.loadUserProfile();
+                    }
+                    localStorage.removeItem('med_guest_mode');
+                    this.setAuthState(result.user); this.closeAuthModal();
+                }catch(error){
+                    console.error('Authentication error:',error);
+                    if(message)message.textContent=error?.message?.startsWith('Please complete')||error?.message?.startsWith('Account created')?error.message:this.friendlyAuthError(error);
+                }finally{
+                    if(submit){submit.disabled=false;submit.textContent=this.authMode==='register'?'রেজিস্টার করুন':'লগইন করুন';}
+                }
+            }
+
+            async logout() {
+                try {
+                    if (this.auth) await this.auth.signOut();
+                    this.closeAuthModal();
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    const message = document.getElementById('authMessage');
+                    if (message) message.textContent = this.friendlyAuthError(error);
+                }
+            }
+
+            continueAsGuest() {
+                this.authUser = null;
+                localStorage.setItem('med_guest_mode', 'true');
+                this.closeAuthModal();
+                this.setAuthState(null);
+            }
+
+            friendlyAuthError(error) {
+                const code = error?.code || '';
+                const map = {
+                    'auth/invalid-email': 'ইমেইল ঠিকানাটি সঠিক নয়।',
+                    'auth/user-not-found': 'এই ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি।',
+                    'auth/wrong-password': 'পাসওয়ার্ড সঠিক নয়।',
+                    'auth/email-already-in-use': 'এই ইমেইল দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে।',
+                    'auth/weak-password': 'পাসওয়ার্ড আরও শক্তিশালী করুন (কমপক্ষে ৬ অক্ষর)।',
+                    'auth/too-many-requests': 'অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।',
+                    'auth/network-request-failed': 'নেটওয়ার্ক সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।'
+                };
+                return map[code] || error?.message || 'Authentication ব্যর্থ হয়েছে।';
+            }
+
+            // Language + translation
+            t(en, bn) { return this.language === 'en' ? en : bn; }
+
+            async toggleLanguage() {
+                this.language = this.language === 'bn' ? 'en' : 'bn';
+                localStorage.setItem('med_language', this.language);
+                await this.applyLanguage();
+
+                // Re-render every dynamic surface so questions/options/explanations
+                // immediately follow the selected language.
+                if (this.examActive) this.renderQuestion();
+                if (!document.getElementById('view-previous')?.classList.contains('hidden')) this.renderPreviousQuestions();
+                if (!document.getElementById('view-question-bank')?.classList.contains('hidden')) this.renderQuestionBank();
+                if (!document.getElementById('view-practice')?.classList.contains('hidden')) this.renderPractice();
+                if (!document.getElementById('view-review')?.classList.contains('hidden')) this.showReviewAnswersView();
+                if (!document.getElementById('view-result')?.classList.contains('hidden')) this.renderResult?.();
+            }
+
+            applyLanguage() {
+                document.documentElement.lang = this.language;
+                document.body.classList.toggle('lang-en', this.language === 'en');
+                const label = document.getElementById('languageToggleLabel');
+                if (label) label.textContent = this.language === 'bn' ? 'EN' : 'বাংলা';
+                document.querySelectorAll('.exam-lang-label').forEach(el => el.textContent = this.language === 'bn' ? 'EN' : 'বাংলা');
+
+                const map = {
+                    authStatusLabel: ['Login','লগইন'], examIntroLabel: ['Exam Instructions','পরীক্ষার নির্দেশনা'],
+                    examIntroRulesTitle: ['How this exam works','পরীক্ষা পদ্ধতি'], btnSubmitExam: ['Submit Exam','পরীক্ষা জমা দিন'],
+                    btnMarkReview: ['Mark for Review','রিভিউতে রাখুন'], btnClearAnswer: ['Clear Answer','উত্তর মুছুন'],
+                    btnPrevQ: ['Previous','পূর্ববর্তী'], btnNextQ: ['Next','পরবর্তী'], btnReviewAnswers: ['Review Answers','উত্তর পর্যালোচনা']
+                };
+                Object.entries(map).forEach(([id,[en,bn]]) => {
+                    const el=document.getElementById(id);
+                    if(el) el.textContent=this.t(en,bn);
+                });
+                return this.updateStaticLanguage();
+            }
+
+            async updateStaticLanguage() {
+                const ignored = 'script,style,[data-no-translate],#q-options,#previous-question-list,#question-bank-list,#practice-question,#exam-timer';
+                const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+                const nodes=[];
+                while(walker.nextNode()) {
+                    const n=walker.currentNode, parent=n.parentElement;
+                    if(!parent || !n.nodeValue.trim() || parent.closest(ignored)) continue;
+                    if(!n.dataset.originalText) {
+                        n.dataset.originalText=n.nodeValue;
+                        n.dataset.originalLang=this.detectTextLanguage(n.nodeValue);
+                    }
+                    nodes.push(n);
+                }
+                const dict = {
+                    'হোম':'Home','হোমে ফিরে যান':'Back to Home','প্রশ্ন ব্যাংক':'Question Bank','প্র্যাকটিস':'Practice','কুইজ':'Quiz','পরীক্ষা':'Exam','পূর্ববর্তী বছর':'Previous Year','লিডারবোর্ড':'Leaderboard','প্রোফাইল':'Profile','প্রগ্রেস':'Progress','সিলেবাস':'Syllabus','লগইন':'Login','রেজিস্টার':'Register','লগআউট':'Logout','গেস্ট':'Guest','শুরু করুন':'Start','শুরু করুন এখনই':'Start Now','শুরু':'Start','পরবর্তী':'Next','পূর্ববর্তী':'Previous','সাবমিট':'Submit','পরীক্ষা জমা দিন':'Submit Exam','পরীক্ষা শুরু করুন':'Start Exam','উত্তর দেখুন':'Show Answer','উত্তর লুকান':'Hide Answer','উত্তর দেখুন / লুকান':'Show / Hide Answer','উত্তর মুছুন':'Clear Answer','রিভিউতে রাখুন':'Mark for Review','উত্তর পর্যালোচনা':'Review Answers','সঠিক উত্তর':'Correct Answer','ব্যাখ্যা':'Explanation','বিষয়':'Subject','বছর':'Year','সকল বিষয়':'All Subjects','সকল বছর':'All Years','অনুসন্ধান':'Search','ফিল্টার':'Filter','প্রশ্ন':'Question','প্রশ্নসমূহ':'Questions','মোট':'Total','নম্বর':'Marks','সময়':'Time','সময় বাকি':'Time Remaining','ফলাফল':'Result','স্কোর':'Score','সঠিক':'Correct','ভুল':'Wrong','উত্তরহীন':'Unanswered','র‍্যাংক':'Rank','পয়েন্ট':'Points','কলেজ':'College','নাম':'Name','মোবাইল':'Mobile','ইমেইল':'Email','শ্রেণি':'Class','রক্তের গ্রুপ':'Blood Group','ড্যাশবোর্ড':'Dashboard','আজকের অগ্রগতি':'Today\'s Progress','সাম্প্রতিক':'Recent','চ্যালেঞ্জ':'Challenge','মেডিকেল চ্যালেঞ্জ':'Medical Challenge','দৈনিক চ্যালেঞ্জ':'Daily Challenge','পূর্ববর্তী প্রশ্ন':'Previous Question','পরবর্তী প্রশ্ন':'Next Question','পরীক্ষার নির্দেশনা':'Exam Instructions','পরীক্ষা পদ্ধতি':'How this exam works','প্রশ্ন ব্যাংক লোড হচ্ছে...':'Loading question bank...','কোনো প্রশ্ন পাওয়া যায়নি।':'No questions found.','লোড হচ্ছে...':'Loading...','সেভ হচ্ছে...':'Saving...','সফল':'Success','ত্রুটি':'Error','জীববিজ্ঞান':'Biology','রসায়ন':'Chemistry','রসায়ন':'Chemistry','পদার্থবিজ্ঞান':'Physics','ইংরেজি':'English','সাধারণ জ্ঞান':'General Knowledge','মডেল টেস্ট':'Model Test','প্র্যাকটিস প্রশ্ন':'Practice Questions','পূর্ববর্তী বছরের প্রশ্ন':'Previous Year Questions','এই বছরের পরীক্ষা দিন':'Take This Year\'s Exam','প্রশ্নগুলো দেখুন':'View Questions','আরও দেখুন':'View More','সঠিক — +১ practice mark':'Correct — +1 practice mark','সঠিক নয় — ০ mark':'Not correct — 0 mark','এই প্রশ্নের কোনো ব্যাখ্যা দেওয়া হয়নি।':'No explanation is available for this question.'
+                };
+                const pending=[];
+                nodes.forEach(n=>{
+                    const original=n.dataset.originalText || n.nodeValue;
+                    const source=n.dataset.originalLang || this.detectTextLanguage(original);
+                    if(this.language===source){ n.nodeValue=original; return; }
+                    if(this.language==='en' && dict[original.trim()]) { n.nodeValue=original.replace(original.trim(),dict[original.trim()]); return; }
+                    if(this.language==='bn') {
+                        // Restore source-language text when it was originally Bengali; otherwise translate English below.
+                    }
+                    pending.push({node:n,text:original,source});
+                });
+                const chunks=[]; let chunk=[]; let size=0;
+                pending.forEach(item=>{ const len=item.text.length+30; if(size+len>1200&&chunk.length){chunks.push(chunk);chunk=[];size=0;} chunk.push(item);size+=len; });
+                if(chunk.length)chunks.push(chunk);
+                for(const batch of chunks){
+                    try{
+                        const joined=batch.map(x=>x.text.trim()).join('\n<<<MEDSEP>>>\n');
+                        const source=batch.every(x=>x.source==='bn')?'bn':batch.every(x=>x.source==='en')?'en':'auto';
+                        const url='https://translate.googleapis.com/translate_a/single?client=gtx&sl='+source+'&tl='+this.language+'&dt=t&q='+encodeURIComponent(joined);
+                        const res=await fetch(url,{cache:'force-cache'}); if(!res.ok) continue;
+                        const data=await res.json(); const translated=(data?.[0]||[]).map(x=>x?.[0]||'').join('');
+                        const parts=translated.split(/\s*<<<MEDSEP>>>\s*/);
+                        batch.forEach((item,i)=>{if(parts[i])item.node.nodeValue=parts[i];});
+                    }catch(e){console.warn('Static language translation unavailable.',e);}
+                }
+            }
+
+            localizedSubject(subject) {
+                const m={biology:['Biology','জীববিজ্ঞান'],chemistry:['Chemistry','রসায়ন'],physics:['Physics','পদার্থবিজ্ঞান'],english:['English','ইংরেজি'],gk:['General Knowledge','সাধারণ জ্ঞান']};
+                const x=m[subject]||[subject,subject]; return this.t(x[0],x[1]);
+            }
+            localizedSource(source) {
+                if(/previous|verified/i.test(source)) return this.t('Previous Year','পূর্ববর্তী বছর');
+                if(/model/i.test(source)) return this.t('Model Test','মডেল টেস্ট');
+                if(/practice/i.test(source)) return this.t('Practice','প্র্যাকটিস');
+                return source;
+            }
+            getLocalizedQuestionText(q) {
+                if(this.language==='en') return q.question_en || q.question;
+                return q.question_bn || q.question;
+            }
+            getLocalizedOption(q,i) {
+                const options = this.language==='en' ? q.options_en : q.options_bn;
+                if(Array.isArray(options) && options[i]) return options[i];
+                return Array.isArray(q.options) ? (q.options[i] || '') : '';
+            }
+            getLocalizedExplanation(q) {
+                if(this.language==='en') return q.explanation_en || q.explanation || '';
+                return q.explanation_bn || q.explanation || '';
+            }
+            async translateQuestionIntoCurrentLanguage(q, idx) {
+                const target=this.language;
+                const source=this.detectTextLanguage(q.question);
+                if(target===source) return;
+                const targetField=target==='en'?'question_en':'question_bn';
+                const optionsField=target==='en'?'options_en':'options_bn';
+                const explanationField=target==='en'?'explanation_en':'explanation_bn';
+                if(q[targetField] && Array.isArray(q[optionsField]) && q[optionsField].length===4) return;
+
+                const key=`med_tr_${q.id}_${source}_${target}_v5`;
+                try {
+                    const cached=localStorage.getItem(key);
+                    if(cached){
+                        const data=JSON.parse(cached);
+                        q[targetField]=data.question || q[targetField] || '';
+                        q[optionsField]=Array.isArray(data.options)?data.options:q[optionsField];
+                        q[explanationField]=data.explanation || q[explanationField] || '';
+                        this.renderQuestionIfCurrent(idx);
+                        return;
+                    }
+                } catch(e) { localStorage.removeItem(key); }
+
+                try {
+                    const baseOptions=Array.isArray(q.options)?q.options:['','','',''];
+                    const parts=[q.question,...baseOptions,q.explanation||''];
+                    const payload=parts.join('\n<<<QSEP>>>\n');
+                    const url='https://translate.googleapis.com/translate_a/single?client=gtx&sl='+source+'&tl='+target+'&dt=t&q='+encodeURIComponent(payload);
+                    const res=await fetch(url,{cache:'force-cache'});
+                    if(!res.ok) throw new Error(`translation http ${res.status}`);
+                    const data=await res.json();
+                    const translated=(data?.[0]||[]).map(x=>x?.[0]||'').join('');
+                    const out=translated.split(/\s*<<<QSEP>>>\s*/);
+                    if(out.length>=5){
+                        q[targetField]=out[0]||'';
+                        q[optionsField]=[out[1]||'',out[2]||'',out[3]||'',out[4]||''];
+                        q[explanationField]=out[5]||'';
+                        localStorage.setItem(key,JSON.stringify({question:q[targetField],options:q[optionsField],explanation:q[explanationField]}));
+                        this.renderQuestionIfCurrent(idx);
+                    }
+                } catch(e){
+                    console.warn('Question translation unavailable; keeping original content.',e);
+                    this.renderQuestionIfCurrent(idx);
+                }
+            }
+
+            renderQuestionIfCurrent(idx){ if(this.examState.currentIndex===idx && this.examActive) this.renderQuestion(); else if(!document.getElementById('view-previous')?.classList.contains('hidden')) this.renderPreviousQuestions(); }
+
+            // Previous-year browser (read-only; quiz is a separate action)
+            showPreviousYears() { this.showView('previous'); this.renderPreviousYearList(); }
+            renderPreviousYearList() {
+                const years=[...new Set(this.questionBank.filter(q=>q.year && q.isPreviousYear).map(q=>q.year))].sort((a,b)=>b.localeCompare(a,undefined,{numeric:true}));
+                const el=document.getElementById('previous-year-list'); if(!el) return;
+                el.innerHTML=years.map(y=>`<button onclick="app.selectPreviousYear('${this.escapeHtml(y).replace(/'/g,"\\'")}')" class="p-4 text-right rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-medical-500 shadow-sm"><div class="text-xs text-gray-500">Previous Year</div><div class="text-xl font-extrabold text-gray-900 dark:text-white mt-1">${this.escapeHtml(y)}</div><div class="text-xs text-medical-600 mt-1">${this.questionBank.filter(q=>q.year===y&&q.isPreviousYear).length} questions</div></button>`).join('');
+            }
+            selectPreviousYear(year) { this.previousSelectedYear=year; this.previousShowAnswers=false; document.getElementById('previous-browser')?.classList.remove('hidden'); this.renderPreviousQuestions(); }
+            togglePreviousAnswers(){ this.previousShowAnswers=!this.previousShowAnswers; this.renderPreviousQuestions(); }
+            renderPreviousQuestions(){
+                if(!this.previousSelectedYear) return; const qs=this.questionBank.filter(q=>q.year===this.previousSelectedYear&&q.isPreviousYear); document.getElementById('previous-selected-year').textContent=this.t(`Previous Year ${this.previousSelectedYear}`,`বিগত বছর ${this.previousSelectedYear}`); document.getElementById('previous-count').textContent=this.t(`${qs.length} questions — read-only mode`,`${qs.length}টি প্রশ্ন — শুধু দেখার জন্য`); document.getElementById('previous-answer-toggle').textContent=this.previousShowAnswers?this.t('Hide Answers','উত্তর লুকান'):this.t('Show Answers','উত্তর দেখুন');
+                const box=document.getElementById('previous-question-list'); box.innerHTML=''; qs.forEach((q,i)=>{ const card=document.createElement('article'); card.className='bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700'; const opts=q.options.map((o,j)=>`<div class="p-3 rounded-xl bg-gray-50 dark:bg-gray-700/50 text-sm"><b>${'ABCD'[j]}.</b> ${this.escapeHtml(this.getLocalizedOption(q,j))}</div>`).join(''); card.innerHTML=`<div class="flex justify-between gap-3 mb-3"><span class="text-xs font-bold text-medical-600">${this.escapeHtml(q.subject)}</span><span class="text-xs text-gray-500">${this.escapeHtml(q.year)} • ${this.t('Previous Year','পূর্ববর্তী বছর')}</span></div><h3 class="font-bold text-gray-900 dark:text-white leading-relaxed">${i+1}. ${this.escapeHtml(this.getLocalizedQuestionText(q))}</h3><div class="grid gap-2 mt-4">${opts}</div>${this.previousShowAnswers?`<div class="mt-4 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 text-sm text-emerald-800 dark:text-emerald-300"><b>${this.t('Correct Answer','সঠিক উত্তর')}:</b> ${q.correctAnswer}<br>${this.escapeHtml(this.getLocalizedExplanation(q))}</div>`:''}`; box.appendChild(card); if(this.language!==this.detectTextLanguage(q.question)) this.translateQuestionIntoCurrentLanguage(q,i); });
+            }
+            startPreviousYearQuiz(){ if(!this.previousSelectedYear) return; this.setup.mode='previousQuiz'; this.setup.subject='all'; this.setup.questionsCount=Math.min(20,this.questionBank.filter(q=>q.year===this.previousSelectedYear&&q.isPreviousYear).length); this.setup.durationMins=10; const ys=document.getElementById('setup-year'); if(ys) ys.value=this.previousSelectedYear; this.prepareExamFromSetup(); }
+
+            async loadUserProfile(){
+                if(!this.authUser) return;
+                const fallback={uid:this.authUser.uid,name:this.authUser.displayName||'',email:this.authUser.email||'',college:'',mobile:'',class:'',bloodGroup:''};
+                if(!this.firestore){ this.profile=fallback; this.updateSidebarUser(); return; }
+                try{
+                    const ref=this.firestore.collection('students').doc(this.authUser.uid);
+                    const snap=await ref.get();
+                    if(snap.exists){ this.profile={...fallback,...snap.data()}; }
+                    else {
+                        this.profile=fallback;
+                        await ref.set({uid:this.authUser.uid,name:fallback.name,email:fallback.email,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+                    }
+                }catch(e){ console.warn('Profile load failed',e); this.profile=fallback; }
+                this.updateSidebarUser();
+                this.setAuthState(this.authUser);
+            }
+
+            updateSidebarUser(){
+                const p=this.profile||{}; const name=p.name||this.authUser?.displayName||this.authUser?.email||'Guest Student';
+                const meta=this.authUser?(p.college||this.authUser.email||'Signed in'):'Guest mode';
+                const nameEl=document.getElementById('sidebar-user-name'), metaEl=document.getElementById('sidebar-user-meta'), avatar=document.getElementById('sidebar-avatar');
+                if(nameEl) nameEl.textContent=name; if(metaEl) metaEl.textContent=meta;
+                if(avatar) avatar.textContent=(name.trim()[0]||'G').toUpperCase();
+            }
+            getLeaderboardCache(){ try{return JSON.parse(localStorage.getItem(this.leaderboardCacheKey)||'null');}catch{return null;} }
+            setLeaderboardCache(rows){ localStorage.setItem(this.leaderboardCacheKey,JSON.stringify({savedAt:Date.now(),rows})); }
+            renderLeaderboardRows(rows){
+                const body=document.getElementById('leaderboard-body'); if(!body)return; body.innerHTML='';
+                if(!rows?.length){ body.innerHTML=`<tr><td colspan="6" class="py-12 text-center text-sm text-gray-500">${this.t('No leaderboard data yet. Complete a Challenge Quiz to appear here.','এখনও কোনো লিডারবোর্ড ডেটা নেই। Challenge Quiz সম্পন্ন করলে এখানে দেখা যাবে।')}</td></tr>`; return; }
+                rows.forEach((x,i)=>{const tr=document.createElement('tr');tr.className=`leader-row ${this.authUser?.uid===x.uid?'is-me':''}`;tr.innerHTML=`<td class="py-4 px-3 font-extrabold">${i<3?['🥇','🥈','🥉'][i]:i+1}</td><td class="py-4 px-3 font-bold">${this.escapeHtml(x.name||this.t('Student','শিক্ষার্থী'))}</td><td class="py-4 px-3">${this.escapeHtml(x.college||'—')}</td><td class="py-4 px-3">${x.quizzes||0}</td><td class="py-4 px-3">${Number(x.accuracy||0).toFixed(1)}%</td><td class="py-4 px-3 font-extrabold text-medical-600">${Number(x.points||0)}</td>`;body.appendChild(tr);});
+            }
+            async recordLeaderboardResult({correctCount,wrongCount,totalQuestions,quizPoints,accuracy}){
+                if(!this.authUser||!this.firestore)return;
+                const attemptId=`${this.authUser.uid}_${this.examState.startedAt}`;
+                try{
+                    const attemptRef=this.firestore.collection('quizAttempts').doc(attemptId);
+                    const existing=await attemptRef.get(); if(existing.exists)return;
+                    const ref=this.firestore.collection('leaderboard').doc(this.authUser.uid); const snap=await ref.get(); const old=snap.exists?snap.data():{};
+                    const nextCorrect=(old.correct||0)+correctCount, nextAnswered=(old.answered||0)+correctCount+wrongCount;
+                    await this.firestore.runTransaction(async tx=>{
+                        tx.set(attemptRef,{uid:this.authUser.uid,quizPoints:Number(quizPoints)||0,correct:correctCount,wrong:wrongCount,total:totalQuestions,accuracy:Number(accuracy)||0,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+                        tx.set(ref,{uid:this.authUser.uid,name:this.profile?.name||this.authUser.displayName||'Student',college:this.profile?.college||'',points:(old.points||0)+(Number(quizPoints)||0),quizzes:(old.quizzes||0)+1,correct:nextCorrect,answered:nextAnswered,accuracy:Number((nextCorrect/Math.max(1,nextAnswered)*100).toFixed(1)),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+                    });
+                    this.loadLeaderboard(true);
+                }catch(e){ console.error('Leaderboard write failed',e); this.showLeaderboardStatus(this.t('Leaderboard sync failed. Your result is still saved locally.','লিডারবোর্ড sync হয়নি। আপনার ফলাফল local-এ সংরক্ষিত আছে।'),true); }
+            }
+            async loadLeaderboard(silent=false){
+                const body=document.getElementById('leaderboard-body'); if(!body)return;
+                const cache=this.getLeaderboardCache();
+                if(cache?.rows?.length){this.renderLeaderboardRows(cache.rows); if(!silent)this.showLeaderboardStatus(this.t('Showing saved leaderboard while checking for updates…','সংরক্ষিত লিডারবোর্ড দেখানো হচ্ছে, নতুন তথ্য খোঁজা হচ্ছে…'),false);}
+                if(!this.firestore){ if(!cache?.rows?.length)this.showLeaderboardStatus(this.t('Leaderboard is unavailable. Enable Firestore.','লিডারবোর্ড পাওয়া যাচ্ছে না। Firestore চালু করুন।'),true); return; }
+                try{
+                    const snap=await this.firestore.collection('leaderboard').orderBy('points','desc').limit(100).get();
+                    const rows=snap.docs.map(d=>({uid:d.id,...d.data()})); this.setLeaderboardCache(rows); this.renderLeaderboardRows(rows); this.showLeaderboardStatus(this.t('Leaderboard updated silently.','লিডারবোর্ড নীরবে আপডেট হয়েছে।'),false);
+                }catch(e){console.error(e); if(cache?.rows?.length)this.showLeaderboardStatus(this.t('Showing last saved leaderboard.','সর্বশেষ সংরক্ষিত লিডারবোর্ড দেখানো হচ্ছে।'),false); else this.showLeaderboardStatus(this.t('Could not load leaderboard. Check Firestore rules.','লিডারবোর্ড লোড করা যায়নি। Firestore Rules পরীক্ষা করুন।'),true);}
+            }
+            showLeaderboardStatus(msg,error){const el=document.getElementById('leaderboard-status');if(!el)return;el.textContent=msg;el.className=`mb-4 rounded-xl p-3 text-sm ${error?'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-300':'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300'}`;}
+
+            // Question Bank + Practice
+            openQuestionBank(mode='view'){ this.bankMode=mode; this.bankSearch=''; this.bankSubject='all'; this.bankYear='all'; this.showView(mode==='practice'?'practice':'question-bank'); if(mode==='practice') this.startPractice(); else this.renderQuestionBank(); }
+            getFilteredBank(){
+                let qs=[...this.questionBank];
+                if(this.bankSubject!=='all')qs=qs.filter(q=>q.subject===this.bankSubject);
+                if(this.bankYear!=='all')qs=qs.filter(q=>q.year===this.bankYear);
+                if(this.bankSearch.trim()){const s=this.bankSearch.trim().toLowerCase();qs=qs.filter(q=>[q.question,q.question_bn,q.question_en,q.source,q.subject,q.year].join(' ').toLowerCase().includes(s));}
+                return qs;
+            }
+            renderQuestionBank(){
+                const list=document.getElementById('question-bank-list'); if(!list)return; const qs=this.getFilteredBank();
+                const count=document.getElementById('question-bank-count'); if(count)count.textContent=this.t(`${qs.length} questions`,`মোট ${qs.length}টি প্রশ্ন`);
+                list.innerHTML='';
+                qs.slice(0,80).forEach((q,i)=>{const card=document.createElement('article');card.className='bank-card';const opts=q.options.map((o,j)=>`<div class="bank-option"><b>${'ABCD'[j]}</b><span>${this.escapeHtml(this.getLocalizedOption(q,j))}</span></div>`).join('');card.innerHTML=`<div class="bank-meta"><span>${this.escapeHtml(this.localizedSubject(q.subject))}</span><span>${this.escapeHtml(q.year||this.t('Practice','প্র্যাকটিস'))}</span></div><h3>${i+1}. ${this.escapeHtml(this.getLocalizedQuestionText(q))}</h3><div class="bank-options">${opts}</div><button class="bank-answer-btn" type="button">${this.t('Show Answer','উত্তর দেখুন')}</button><div class="bank-answer hidden"><strong>${this.t('Correct Answer','সঠিক উত্তর')}:</strong> ${q.correctAnswer}<br>${this.escapeHtml(this.getLocalizedExplanation(q))}</div>`;card.querySelector('.bank-answer-btn').onclick=()=>{const a=card.querySelector('.bank-answer');a.classList.toggle('hidden');card.querySelector('.bank-answer-btn').textContent=a.classList.contains('hidden')?this.t('Show Answer','উত্তর দেখুন'):this.t('Hide Answer','উত্তর লুকান')};list.appendChild(card);if(this.language!==this.detectTextLanguage(q.question))this.translateQuestionIntoCurrentLanguage(q,i);});
+                if(!qs.length)list.innerHTML=`<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><h3>${this.t('No questions found','কোনো প্রশ্ন পাওয়া যায়নি')}</h3><p>${this.t('Try another filter or search term.','অন্য filter বা search ব্যবহার করুন।')}</p></div>`;
+                if(qs.length>80){const note=document.createElement('div');note.className='empty-state compact';note.textContent=this.t('Showing the first 80 matches. Refine your filters to see more.','প্রথম ৮০টি ফলাফল দেখানো হচ্ছে। আরও নির্দিষ্ট filter ব্যবহার করুন।');list.appendChild(note);}
+            }
+            startPractice(){
+                const qs=this.questionBank.filter(q=>q.source && !/^verified previous/i.test(q.source) && !q.isPreviousYear);
+                if(!qs.length){this.showDataError(this.t('No practice questions are available.','কোনো practice question পাওয়া যায়নি।'));return;}
+                this.practiceSession={questions:qs.sort(()=>Math.random()-.5).slice(0,20),index:0,answers:[],marks:0,showAnswer:false}; this.showView('practice'); this.renderPractice();
+            }
+            renderPractice(){
+                const s=this.practiceSession,q=s?.questions?.[s.index]; if(!q)return;
+                const root=document.getElementById('practice-question'); if(!root)return;
+                const chosen=s.answers[s.index];
+                root.innerHTML=`<div class="practice-meta"><span>${this.localizedSubject(q.subject)}</span><span>${s.index+1} / ${s.questions.length}</span></div><h2>${s.index+1}. ${this.escapeHtml(this.getLocalizedQuestionText(q))}</h2><div class="practice-options">${q.options.map((o,j)=>`<button class="practice-option ${chosen!==undefined?(j===q.answer?'correct':j===chosen?'wrong':''):''}" ${chosen!==undefined?'disabled':''} data-i="${j}"><span>${'ABCD'[j]}</span>${this.escapeHtml(this.getLocalizedOption(q,j))}</button>`).join('')}</div>${chosen!==undefined?`<div class="practice-feedback ${chosen===q.answer?'ok':'bad'}"><strong>${chosen===q.answer?this.t('Correct — +1 practice mark','সঠিক — +১ practice mark'):this.t('Not correct — 0 mark','সঠিক নয় — ০ mark')}</strong><p>${this.escapeHtml(this.getLocalizedExplanation(q))}</p></div>`:''}`;
+                root.querySelectorAll('.practice-option').forEach(btn=>btn.onclick=()=>this.answerPractice(Number(btn.dataset.i)));
+                document.getElementById('practice-score').textContent=String(s.marks);document.getElementById('practice-progress').textContent=this.t(`Question ${s.index+1} of ${s.questions.length}`,`প্রশ্ন ${s.index+1} / ${s.questions.length}`);
+                if(this.language!==this.detectTextLanguage(q.question))this.translateQuestionIntoCurrentLanguage(q,s.index);
+            }
+            answerPractice(i){const s=this.practiceSession;if(!s||s.answers[s.index]!==undefined)return;s.answers[s.index]=i;if(i===s.questions[s.index].answer)s.marks++;this.renderPractice();}
+            nextPractice(){const s=this.practiceSession;if(!s)return;if(s.index<s.questions.length-1){s.index++;this.renderPractice();}else{localStorage.setItem(this.getHistoryKey()+'_practice',JSON.stringify({marks:s.marks,total:s.questions.length,date:Date.now()}));this.showView('progress');this.loadProgressStats();}}
+            prevPractice(){const s=this.practiceSession;if(s&&s.index>0){s.index--;this.renderPractice();}}
+
+            // Theme Management
+            toggleTheme() {
+                this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('med_theme', this.currentTheme);
+                this.applyTheme();
+            }
+
+            applyTheme() {
+                if (this.currentTheme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+
+            // Sidebar
+            toggleSidebar(){ if(this.examActive)return; document.getElementById('app-sidebar')?.classList.toggle('open'); document.getElementById('sidebar-overlay')?.classList.toggle('hidden'); document.body.classList.toggle('sidebar-open'); }
+            closeSidebar(){ document.getElementById('app-sidebar')?.classList.remove('open'); document.getElementById('sidebar-overlay')?.classList.add('hidden'); document.body.classList.remove('sidebar-open'); }
+            updateSidebarActive(viewName){ document.querySelectorAll('.sidebar-link[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===viewName)); }
+
+            // Mobile Menu
+            toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                menu.classList.toggle('hidden');
+            }
+
+            // View Switching
+            showView(viewName, force = false) {
+                if (this.examActive && !this.examState.submitted && !force && viewName !== 'exam') {
+                    this.confirmSubmitExam('navigation');
+                    return;
+                }
+                this.updateSidebarActive(viewName);
+                this.closeSidebar();
+                this.views.forEach(v => {
+                    const el = document.getElementById(`view-${v}`);
+                    if (el) el.classList.toggle('hidden', v !== viewName);
+                });
+                document.body.classList.toggle('exam-active', viewName === 'exam');
+                if (viewName === 'exam') { history.pushState({ exam: true }, '', '#exam'); }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Quick Exam Actions
+            openSetupView() {
+                this.showView('setup');
+            }
+
+            setupExamQuick(mode) {
+                this.setSetupMode(mode);
+                if (mode === 'previous') { this.showPreviousYears(); return; }
+                this.showView('setup');
+            }
+
+            startChallenge() { this.setup.mode='challenge'; this.setup.subject='all'; this.setup.questionsCount=20; this.setup.durationMins=10; const ys=document.getElementById('setup-year'); if(ys) ys.value='all'; this.prepareExamFromSetup(); }
+
+            startSubjectExam(subjectKey) {
+                this.setup.mode = 'random';
+                this.setup.subject = subjectKey;
+                this.setup.questionsCount = 20;
+                this.setup.durationMins = 20;
+                const subjectSelect = document.getElementById('setup-subject');
+                if (subjectSelect) subjectSelect.value = subjectKey;
+                this.prepareExamFromSetup();
+            }
+
+            // Setup Config Adjusters
+            setSetupMode(mode) {
+                this.setup.mode = mode;
+                ['random', 'model', 'previous'].forEach(m => {
+                    const btn = document.getElementById(`setup-mode-${m}`);
+                    if (btn) {
+                        if (m === mode) {
+                            btn.className = "mode-select-btn py-2.5 px-3 text-xs sm:text-sm font-bold rounded-xl border border-medical-600 bg-medical-50 dark:bg-medical-900/40 text-medical-700 dark:text-medical-300 text-center";
+                        } else {
+                            btn.className = "mode-select-btn py-2.5 px-3 text-xs sm:text-sm font-semibold rounded-xl border border-gray-300 dark:border-gray-600 text-center hover:bg-gray-50 dark:hover:bg-gray-700";
+                        }
+                    }
+                });
+            }
+
+            setSetupQuestions(count) {
+                this.setup.questionsCount = count;
+                this.updateSetupUI();
+            }
+
+            setSetupDuration(mins) {
+                this.setup.durationMins = mins;
+                this.updateSetupUI();
+            }
+
+            updateSetupUI() {
+                const subjectSelect = document.getElementById('setup-subject');
+                if (subjectSelect) subjectSelect.value = this.setup.subject || 'all';
+                const yearSelect = document.getElementById('setup-year');
+                if (yearSelect && !yearSelect.value) yearSelect.value = 'all';
+                this.setSetupMode(this.setup.mode);
+
+                // Update Question Count buttons active state
+                const qBtns = document.querySelectorAll('.q-count-btn');
+                qBtns.forEach(btn => {
+                    const val = parseInt(btn.innerText.trim());
+                    if (val === this.setup.questionsCount) {
+                        btn.className = "q-count-btn py-2 text-xs sm:text-sm font-bold rounded-xl border-2 border-medical-600 bg-medical-50 dark:bg-medical-900/40 text-medical-700 dark:text-medical-300 text-center shadow-sm";
+                    } else {
+                        btn.className = "q-count-btn py-2 text-xs sm:text-sm font-bold rounded-xl border border-gray-300 dark:border-gray-600 text-center hover:bg-gray-50 dark:hover:bg-gray-700";
+                    }
+                });
+
+                // Update Time buttons active state
+                const tBtns = document.querySelectorAll('.time-btn');
+                tBtns.forEach(btn => {
+                    const val = parseInt(btn.innerText.replace(/[^0-9]/g, ''));
+                    if (val === this.setup.durationMins) {
+                        btn.className = "time-btn py-2 text-xs sm:text-sm font-bold rounded-xl border-2 border-medical-600 bg-medical-50 dark:bg-medical-900/40 text-medical-700 dark:text-medical-300 text-center shadow-sm";
+                    } else {
+                        btn.className = "time-btn py-2 text-xs sm:text-sm font-bold rounded-xl border border-gray-300 dark:border-gray-600 text-center hover:bg-gray-50 dark:hover:bg-gray-700";
+                    }
+                });
+            }
+
+            updateSubjectCountsUI() {
+                const subjects = ['biology', 'chemistry', 'physics', 'english', 'gk'];
+                subjects.forEach(sub => {
+                    const count = this.questionBank.filter(q => q.subject === sub).length;
+                    const el = document.getElementById(`count-subject-${sub}`);
+                    if (el) el.innerText = `${count} টি প্রশ্ন`;
+                });
+                const totalEl = document.getElementById('dash-total-questions');
+                if (totalEl) totalEl.innerText = `${this.questionBank.length}+`;
+            }
+
+            /**
+             * Fisher-Yates Shuffle that reshuffles options AND updates the answer index
+             */
+            shuffleQuestionsAndOptions(pool, count) {
+                let filtered = [...pool];
+                const subjectSelect = document.getElementById('setup-subject');
+                const selectedSubject = subjectSelect ? subjectSelect.value : this.setup.subject;
+                const yearSelect = document.getElementById('setup-year');
+                const selectedYear = yearSelect ? yearSelect.value : 'all';
+                if (selectedSubject && selectedSubject !== 'all') filtered = filtered.filter(q => q.subject === selectedSubject);
+                if (selectedYear && selectedYear !== 'all') filtered = filtered.filter(q => q.year === selectedYear);
+                if (this.setup.mode === 'previous' || this.setup.mode === 'previousQuiz') filtered = filtered.filter(q => q.isPreviousYear && q.year);
+                if (this.setup.mode === 'challenge') filtered = filtered.filter(q => q.source && !/^practice$/i.test(q.year || '') );
+                if (!filtered.length) { this.showDataError(this.t('No valid questions match these filters.','এই ফিল্টারে কোনো বৈধ প্রশ্ন পাওয়া যায়নি।')); return []; }
+                for (let i=filtered.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[filtered[i],filtered[j]]=[filtered[j],filtered[i]];}
+                return filtered.slice(0,Math.min(count,filtered.length)).map(q=>{
+                    const optionsWithIndex=q.options.map((text,idx)=>({text,isCorrect:idx===q.answer}));
+                    for(let i=optionsWithIndex.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[optionsWithIndex[i],optionsWithIndex[j]]=[optionsWithIndex[j],optionsWithIndex[i]];}
+                    return {...q,options:optionsWithIndex.map(o=>o.text),answer:optionsWithIndex.findIndex(o=>o.isCorrect)};
+                });
+            }
+
+            // Prepare exam; starting is always a deliberate second step after the instructions screen.
+            startExamWithConfig() { this.prepareExamFromSetup(); }
+
+            prepareExamFromSetup() {
+                if (!this.questionsLoaded || !this.questionBank.length) { this.showDataError('প্রশ্ন ব্যাংক এখনো লোড হয়নি।'); return; }
+                const count = (this.setup.mode === 'challenge' || this.setup.mode === 'previousQuiz') ? 20 : this.setup.questionsCount;
+                const questions = this.shuffleQuestionsAndOptions(this.questionBank, count);
+                if (!questions.length) return;
+                this.preparedExam = { questions, mode: this.setup.mode, subject: this.setup.subject, year: document.getElementById('setup-year')?.value || 'all', durationMins: (this.setup.mode === 'challenge' || this.setup.mode === 'previousQuiz') ? 10 : this.setup.durationMins };
+                this.renderExamIntro();
+                this.showView('exam-intro');
+            }
+
+            renderExamIntro() {
+                const cfg = this.preparedExam;
+                const title = cfg.mode === 'challenge' ? this.t('Medical Challenge','মেডিকেল চ্যালেঞ্জ') : (cfg.mode === 'previous' || cfg.mode === 'previousQuiz') ? `${this.t('Previous Year Exam','বিগত বছরের পরীক্ষা')} — ${cfg.year}` : this.t('Exam Instructions','পরীক্ষার নির্দেশনা');
+                document.getElementById('exam-intro-title').textContent = title;
+                document.getElementById('exam-intro-subtitle').textContent = this.t('Read the rules before you start. Your timer begins only after you press Start Exam.','শুরু করার আগে নিয়মগুলো পড়ে নিন। Start Exam চাপার পরই সময় গণনা শুরু হবে।');
+                document.getElementById('exam-intro-start').textContent = this.t('Start Exam','পরীক্ষা শুরু করুন');
+                const rules = (cfg.mode === 'challenge' || cfg.mode === 'previousQuiz')
+                    ? [this.t('20 MCQ questions','২০টি MCQ প্রশ্ন'), this.t('Time limit: 10 minutes','সময়: ১০ মিনিট'), this.t('+1 for correct, −0.25 for wrong, 0 for skipped','সঠিক +১, ভুল −০.২৫, স্কিপ ০'), this.t('Leaving the exam requires submitting it first','পরীক্ষা থেকে বের হতে হলে আগে পরীক্ষা জমা দিতে হবে'), this.t('Time ending submits automatically','সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে জমা হবে')]
+                    : [this.t(`${cfg.questions.length} questions` ,`${cfg.questions.length}টি প্রশ্ন`), this.t(`Time limit: ${cfg.durationMins} minutes`,`সময়: ${cfg.durationMins} মিনিট`), this.t('+1 for correct, −0.25 for wrong, 0 for skipped','সঠিক +১, ভুল −০.২৫, স্কিপ ০'), this.t('You cannot leave without submitting the exam','জমা না দিয়ে পরীক্ষা থেকে বের হওয়া যাবে না'), this.t('Time ending submits automatically','সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে জমা হবে')];
+                document.getElementById('exam-intro-rules').innerHTML = rules.map(x => `<li>• ${this.escapeHtml(x)}</li>`).join('');
+                document.getElementById('exam-intro-stats').innerHTML = [
+                    [this.t('Questions','প্রশ্ন'), cfg.questions.length], [this.t('Time','সময়'), `${cfg.durationMins} min`], [this.t('Marks','নম্বর'), cfg.questions.length], [this.t('Negative','নেগেটিভ'), '0.25']
+                ].map(([a,b])=>`<div class="rounded-2xl bg-gray-50 dark:bg-gray-700/50 p-4"><div class="text-[11px] uppercase text-gray-500">${a}</div><div class="text-lg font-extrabold text-gray-900 dark:text-white mt-1">${b}</div></div>`).join('');
+            }
+
+            beginPreparedExam() {
+                if (!this.preparedExam) return;
+                const cfg = this.preparedExam;
+                const now = Date.now();
+                this.examState = { questions: cfg.questions, userAnswers: new Array(cfg.questions.length).fill(null), markedForReview: new Array(cfg.questions.length).fill(false), currentIndex: 0, timerSeconds: cfg.durationMins * 60, timerInterval: null, timeUsedSeconds: 0, submitted: false, startedAt: now, deadlineAt: now + cfg.durationMins * 60000, mode: cfg.mode, year: cfg.year, subject: cfg.subject };
+                this.examActive = true;
+                this.renderQuestion(); this.renderPalette(); this.showView('exam'); this.startTimer();
+            }
+
+            // Timer uses a deadline timestamp to avoid interval drift.
+            startTimer() {
+                if (this.examState.timerInterval) clearInterval(this.examState.timerInterval);
+                const tick = () => {
+                    const remaining = Math.max(0, this.examState.deadlineAt - Date.now());
+                    this.examState.timerSeconds = Math.ceil(remaining / 1000);
+                    this.examState.timeUsedSeconds = Math.min(this.examState.deadlineAt - this.examState.startedAt, Date.now() - this.examState.startedAt) / 1000;
+                    const mins = Math.floor(this.examState.timerSeconds / 60), secs = this.examState.timerSeconds % 60;
+                    const el = document.getElementById('exam-timer');
+                    if (el) el.innerText = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                    if (this.examState.timerSeconds <= 0) { clearInterval(this.examState.timerInterval); this.submitExam(true); }
+                };
+                tick(); this.examState.timerInterval = setInterval(tick, 250);
+            }
+
+            // Render Current Question
+            renderQuestion() {
+                const idx = this.examState.currentIndex;
+                const q = this.examState.questions[idx];
+
+                // Meta Info
+                document.getElementById('exam-progress-text').innerText = `${this.t('Question','প্রশ্ন')}: ${idx + 1} / ${this.examState.questions.length}`;
+                document.getElementById('q-subject').innerText = this.localizedSubject(q.subject);
+                document.getElementById('q-source').innerText = q.year ? `${this.localizedSource(q.source)} • ${q.year}` : this.localizedSource(q.source);
+                document.getElementById('q-difficulty').classList.add('hidden');
+                document.getElementById('q-text').innerText = `${idx + 1}. ${this.getLocalizedQuestionText(q)}`;
+                this.translateQuestionIntoCurrentLanguage(q, idx);
+
+                // Options
+                const optionsContainer = document.getElementById('q-options');
+                optionsContainer.innerHTML = '';
+
+                const optionLabels = ['A', 'B', 'C', 'D'];
+                q.options.forEach((optText, optIdx) => {
+                    const isSelected = this.examState.userAnswers[idx] === optIdx;
+                    const btn = document.createElement('button');
+                    btn.className = `w-full text-right p-4 rounded-2xl border transition flex items-center justify-between ${
+                        isSelected 
+                            ? 'border-medical-600 bg-medical-50 dark:bg-medical-900/40 text-medical-800 dark:text-medical-200 font-bold' 
+                            : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200'
+                    }`;
+                    btn.onclick = () => this.selectOption(optIdx);
+
+                    btn.innerHTML = `
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
+                                isSelected ? 'bg-medical-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                            }">${optionLabels[optIdx]}</span>
+                            <span class="text-sm sm:text-base" data-option-index="${optIdx}">${this.escapeHtml(this.getLocalizedOption(q,optIdx))}</span>
+                        </div>
+                    `;
+                    optionsContainer.appendChild(btn);
+                });
+
+                // Review Button State
+                const reviewBtn = document.getElementById('btn-mark-review');
+                if (this.examState.markedForReview[idx]) {
+                    reviewBtn.className = "px-3 py-2 rounded-xl bg-amber-500 text-white font-semibold text-xs transition flex items-center";
+                } else {
+                    reviewBtn.className = "px-3 py-2 rounded-xl border border-amber-400 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40 font-semibold text-xs transition flex items-center";
+                }
+
+                // Nav Buttons
+                document.getElementById('btn-prev-q').disabled = idx === 0;
+                document.getElementById('btn-next-q').disabled = idx === this.examState.questions.length - 1;
+            }
+
+            // Render Side Palette Grid
+            renderPalette() {
+                const paletteGrid = document.getElementById('q-palette-grid');
+                paletteGrid.innerHTML = '';
+
+                this.examState.questions.forEach((_, idx) => {
+                    const btn = document.createElement('button');
+                    const isCurrent = idx === this.examState.currentIndex;
+                    const isAnswered = this.examState.userAnswers[idx] !== null;
+                    const isMarked = this.examState.markedForReview[idx];
+
+                    let bgClass = "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300";
+                    if (isMarked) bgClass = "bg-amber-400 text-white font-bold";
+                    else if (isAnswered) bgClass = "bg-emerald-500 text-white font-bold";
+
+                    let borderClass = isCurrent ? "ring-2 ring-medical-600 ring-offset-2" : "";
+
+                    btn.className = `h-9 w-9 rounded-xl text-xs font-bold flex items-center justify-center transition ${bgClass} ${borderClass}`;
+                    btn.innerText = idx + 1;
+                    btn.onclick = () => {
+                        this.examState.currentIndex = idx;
+                        this.renderQuestion();
+                        this.renderPalette();
+                    };
+                    paletteGrid.appendChild(btn);
+                });
+            }
+
+            selectOption(optIdx) {
+                this.examState.userAnswers[this.examState.currentIndex] = optIdx;
+                this.renderQuestion();
+                this.renderPalette();
+            }
+
+            clearOptionSelection() {
+                this.examState.userAnswers[this.examState.currentIndex] = null;
+                this.renderQuestion();
+                this.renderPalette();
+            }
+
+            toggleMarkReview() {
+                const idx = this.examState.currentIndex;
+                this.examState.markedForReview[idx] = !this.examState.markedForReview[idx];
+                this.renderQuestion();
+                this.renderPalette();
+            }
+
+            prevQuestion() {
+                if (this.examState.currentIndex > 0) {
+                    this.examState.currentIndex--;
+                    this.renderQuestion();
+                    this.renderPalette();
+                }
+            }
+
+            nextQuestion() {
+                if (this.examState.currentIndex < this.examState.questions.length - 1) {
+                    this.examState.currentIndex++;
+                    this.renderQuestion();
+                    this.renderPalette();
+                }
+            }
+
+            confirmSubmitExam(reason = 'manual') {
+                const msg = reason === 'navigation'
+                    ? this.t('You must submit the exam before leaving. Submit now?','পরীক্ষা থেকে বের হওয়ার আগে আপনাকে পরীক্ষা জমা দিতে হবে। এখনই জমা দেবেন?')
+                    : this.t('Are you sure you want to submit the exam? You cannot continue this attempt after submission.','আপনি কি নিশ্চিত যে পরীক্ষা জমা দিতে চান? জমা দেওয়ার পর এই attempt-এ আর ফিরতে পারবেন না।');
+                if (confirm(msg)) this.submitExam(false);
+            }
+
+            submitExam(autoSubmitted = false) {
+                if (this.examState.submitted) return;
+
+                if (this.examState.timerInterval) clearInterval(this.examState.timerInterval);
+                this.examState.submitted = true;
+
+                let correctCount = 0;
+                let wrongCount = 0;
+                let skippedCount = 0;
+
+                this.examState.questions.forEach((q, idx) => {
+                    const ans = this.examState.userAnswers[idx];
+                    if (ans === null) {
+                        skippedCount++;
+                    } else if (ans === q.answer) {
+                        correctCount++;
+                    } else {
+                        wrongCount++;
+                    }
+                });
+
+                const negativeMarks = wrongCount * 0.25;
+                const totalScore = Math.max(0, correctCount - negativeMarks);
+                const totalQuestions = this.examState.questions.length;
+                const accuracy = (correctCount + wrongCount) > 0 
+                    ? ((correctCount / (correctCount + wrongCount)) * 100).toFixed(1) 
+                    : 0;
+
+                // Update Results View UI
+                document.getElementById('res-score-main').innerText = `${totalScore.toFixed(2)} / ${totalQuestions}`;
+                document.getElementById('res-percentage').innerText = `${(totalQuestions ? ((totalScore / totalQuestions) * 100) : 0).toFixed(1)}%`;
+                document.getElementById('res-accuracy').innerText = `${accuracy}%`;
+                document.getElementById('res-correct').innerText = correctCount;
+                document.getElementById('res-wrong').innerText = wrongCount;
+                document.getElementById('res-skipped').innerText = skippedCount;
+                document.getElementById('res-negative').innerText = `-${negativeMarks.toFixed(2)}`;
+
+                const usedSeconds = Math.max(0, Math.round(this.examState.timeUsedSeconds));
+                const minsUsed = Math.floor(usedSeconds / 60);
+                const secsUsed = usedSeconds % 60;
+                document.getElementById('res-time-used').innerText = `${minsUsed}:${secsUsed.toString().padStart(2, '0')}`;
+
+                // Save to LocalStorage
+                const quizPoints = (this.examState.mode === 'challenge' || this.examState.mode === 'previousQuiz') ? Math.max(0, correctCount * 4 - wrongCount) : 0;
+
+                this.saveExamAttempt({
+                    date: new Date().toLocaleDateString('bn-BD'),
+                    mode: this.setup.mode,
+                    subject: document.getElementById('setup-subject').value,
+                    year: document.getElementById('setup-year')?.value || 'all',
+                    score: totalScore.toFixed(2),
+                    total: totalQuestions,
+                    accuracy: `${accuracy}%`,
+                    timeUsed: `${minsUsed}:${secsUsed.toString().padStart(2, '0')}`,
+                    quizPoints, modeLabel: this.examState.mode
+                });
+                if (this.examState.mode === 'challenge' || this.examState.mode === 'previousQuiz') this.recordLeaderboardResult({ correctCount, wrongCount, totalQuestions, quizPoints, accuracy });
+                this.examActive = false;
+                this.preparedExam = null;
+                history.replaceState({ app: true }, '', window.location.pathname + window.location.search);
+                this.showView('result', true);
+            }
+
+            showReviewAnswersView() {
+                const container = document.getElementById('review-list-container');
+                container.innerHTML = '';
+
+                const optionLabels = ['A', 'B', 'C', 'D'];
+
+                this.examState.questions.forEach((q, idx) => {
+                    const userAns = this.examState.userAnswers[idx];
+                    const isCorrect = userAns === q.answer;
+                    const isSkipped = userAns === null;
+
+                    const card = document.createElement('div');
+                    card.className = "bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-4 shadow-sm";
+
+                    let statusBadge = `<span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">সঠিক</span>`;
+                    if (isSkipped) {
+                        statusBadge = `<span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">উত্তর দেওয়া হয়নি</span>`;
+                    } else if (!isCorrect) {
+                        statusBadge = `<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300">ভুল উত্তর</span>`;
+                    }
+
+                    let optionsHTML = q.options.map((opt, optIdx) => {
+                        let optStyle = "bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600";
+                        if (optIdx === q.answer) {
+                            optStyle = "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold";
+                        } else if (optIdx === userAns && !isCorrect) {
+                            optStyle = "bg-red-50 dark:bg-red-950/40 border-red-500 text-red-800 dark:text-red-300 font-bold";
+                        }
+
+                        return `
+                            <div class="p-3 rounded-xl border text-sm flex items-center justify-between ${optStyle}">
+                                <span>${optionLabels[optIdx]}. ${this.escapeHtml(this.getLocalizedOption(q,optIdx))}</span>
+                                ${optIdx === q.answer ? '<i class="fa-solid fa-check text-emerald-600"></i>' : ''}
+                                ${optIdx === userAns && !isCorrect ? '<i class="fa-solid fa-xmark text-red-600"></i>' : ''}
+                            </div>
+                        `;
+                    }).join('');
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-medical-600 uppercase">${this.escapeHtml(q.subject)}</span>
+                            ${statusBadge}
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white text-base">${idx + 1}. ${this.escapeHtml(this.getLocalizedQuestionText(q))}</h4>
+                        <div class="space-y-2">${optionsHTML}</div>
+                        <div class="p-3 bg-medical-50 dark:bg-medical-900/30 rounded-xl text-xs text-medical-800 dark:text-medical-300 border border-medical-100 dark:border-medical-800">
+                            <strong>${this.t('Explanation:','ব্যাখ্যা:')}</strong> ${this.escapeHtml(this.getLocalizedExplanation(q) || this.t('No explanation available.','এই প্রশ্নের কোনো ব্যাখ্যা দেওয়া হয়নি।'))}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                this.showView('review');
+            }
+
+            // LocalStorage and Analytics
+            saveExamAttempt(attempt) {
+                let history = JSON.parse(localStorage.getItem(this.getHistoryKey()) || '[]');
+                history.unshift(attempt);
+                localStorage.setItem(this.getHistoryKey(), JSON.stringify(history));
+                this.loadProgressStats();
+            }
+
+            loadProgressStats() {
+                const history = JSON.parse(localStorage.getItem(this.getHistoryKey()) || '[]');
+                
+                document.getElementById('dash-total-exams').innerText = history.length;
+                document.getElementById('prog-total-attempts').innerText = history.length;
+
+                if (history.length > 0) {
+                    const bestScore = Math.max(...history.map(h => parseFloat(h.score) || 0));
+                    document.getElementById('dash-best-score').innerText = bestScore.toFixed(2);
+                    document.getElementById('prog-best-score').innerText = bestScore.toFixed(2);
+
+                    const avgAcc = (history.reduce((acc, curr) => acc + (parseFloat(curr.accuracy) || 0), 0) / history.length).toFixed(1);
+                    document.getElementById('dash-avg-accuracy').innerText = `${avgAcc}%`;
+                    document.getElementById('prog-avg-accuracy').innerText = `${avgAcc}%`;
+
+                    const avgScore = (history.reduce((acc, curr) => acc + (parseFloat(curr.score) || 0), 0) / history.length).toFixed(2);
+                    document.getElementById('prog-avg-score').innerText = avgScore;
+                } else {
+                    document.getElementById('dash-best-score').innerText = '0.00';
+                    document.getElementById('prog-best-score').innerText = '0.00';
+                    document.getElementById('dash-avg-accuracy').innerText = '0%';
+                    document.getElementById('prog-avg-accuracy').innerText = '0%';
+                    document.getElementById('prog-avg-score').innerText = '0.00';
+                }
+
+                // Table render
+                const tbody = document.getElementById('prog-history-tbody');
+                if (tbody) {
+                    tbody.innerHTML = '';
+                    history.slice(0, 10).forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-gray-50 dark:hover:bg-gray-700/50 transition";
+                        tr.innerHTML = `
+                            <td class="py-3 px-4 font-medium">${item.date}</td>
+                            <td class="py-3 px-4 capitalize">${item.mode}</td>
+                            <td class="py-3 px-4">${item.subject}</td>
+                            <td class="py-3 px-4 font-bold text-medical-600">${item.score} / ${item.total}</td>
+                            <td class="py-3 px-4">${item.accuracy}</td>
+                            <td class="py-3 px-4 text-gray-500">${item.timeUsed}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            }
+
+            clearStorageHistory() {
+                if (confirm("আপনি কি সমস্ত পরীক্ষার ইতিহাস মুছে ফেলতে চান?")) {
+                    localStorage.removeItem(this.getHistoryKey());
+                    this.loadProgressStats();
+                }
+            }
+        }
+
+// Expose the app for existing inline UI handlers and legacy Firebase integration.
+window.app = new MedicalExamApp();
+const app = window.app;
