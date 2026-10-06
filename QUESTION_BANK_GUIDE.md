@@ -1,4 +1,4 @@
-# Question Bank Guide
+#Question Bank Guide
 
 - `questions.json` is the single source of questions.
 - Subject values are normalized to: `biology`, `chemistry`, `physics`, `english`, `gk`.
